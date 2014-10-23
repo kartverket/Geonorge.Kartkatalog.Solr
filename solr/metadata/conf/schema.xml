@@ -108,9 +108,9 @@
 
    <!-- If you remove this field, you must _also_ disable the update log in solrconfig.xml
       or Solr won't start. _version_ and update log are required for SolrCloud
-   --> 
+    
    <field name="_version_" type="long" indexed="true" stored="true"/>
-   
+   -->
    <!-- points to the root document of a block of nested documents. Required for nested
       document support, may be removed otherwise
    
@@ -123,7 +123,7 @@
    -->   
    <field name="uuid" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
    <field name="title" type="text_no" indexed="true" stored="true" multiValued="false"/>
-
+   
 <!--
    <field name="sku" type="text_en_splitting_tight" indexed="true" stored="true" omitNorms="true"/>
    <field name="name" type="text_general" indexed="true" stored="true"/>
