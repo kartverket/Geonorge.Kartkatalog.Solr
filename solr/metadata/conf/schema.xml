@@ -121,23 +121,33 @@
      required, it is highly recommended. A <uniqueKey> is present in almost all Solr 
      installations. See the <uniqueKey> declaration below where <uniqueKey> is set to "id".
    -->   
- <field name="uuid" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
- <field name="title" type="text_no" indexed="true" stored="true" multiValued="false"/>
- <field name="abstract" type="text_no" indexed="false" stored="true" multiValued="false"/>
- <field name="purpose" type="text_no" indexed="false" stored="true" multiValued="false"/>
- <field name="type" type="string" indexed="true" stored="true" multiValued="false"/>
+  <field name="uuid" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
+  <field name="title" type="text_no" indexed="true" stored="true" multiValued="false"/>
+  <field name="abstract" type="text_no" indexed="false" stored="true" multiValued="false"/>
+  <field name="purpose" type="text_no" indexed="false" stored="true" multiValued="false"/>
+  <field name="type" type="string" indexed="true" stored="true" multiValued="false"/>
+  <field name="contact_metadata_organization" type="string" indexed="true" stored="true" multiValued="false"/>
+  <field name="contact_owner_organization" type="string" indexed="true" stored="true" multiValued="false"/>
+  <field name="contact_publisher_organization" type="string" indexed="true" stored="true" multiValued="false"/>
 
- <field name="contact_metadata_name" type="string" indexed="false" stored="true" multiValued="false"/>
- <field name="contact_metadata_organization" type="string" indexed="true" stored="true" multiValued="false"/>
- <field name="contact_metadata_email" type="string" indexed="false" stored="true" multiValued="false"/>
+  <!-- stored fields -->
+  <field name="contact_metadata_name" type="string" indexed="false" stored="true" multiValued="false"/>
+  <field name="contact_metadata_email" type="string" indexed="false" stored="true" multiValued="false"/>
+  <field name="contact_owner_name" type="string" indexed="false" stored="true" multiValued="false"/>
+  <field name="contact_owner_email" type="string" indexed="false" stored="true" multiValued="false"/>
+  <field name="contact_publisher_name" type="string" indexed="false" stored="true" multiValued="false"/>
+  <field name="contact_publisher_email" type="string" indexed="false" stored="true" multiValued="false"/>
+  <field name="date_published" type="string" indexed="false" stored="true" multiValued="false"/>
+  <field name="date_updated" type="string" indexed="false" stored="true" multiValued="false"/>
+  <field name="legend_description_url" type="string" indexed="false" stored="true" multiValued="false"/>
+  <field name="product_page_url" type="string" indexed="false" stored="true" multiValued="false"/>
+  <field name="product_sheet_url" type="string" indexed="false" stored="true" multiValued="false"/>
+  <field name="product_specification_url" type="string" indexed="false" stored="true" multiValued="false"/>
+  <field name="thumbnail_url" type="string" indexed="false" stored="true" multiValued="false"/>
+  <field name="distribution_url" type="string" indexed="false" stored="true" multiValued="false"/>
+  <field name="distribution_protocol" type="string" indexed="false" stored="true" multiValued="false"/>
+  <field name="maintenance_frequency" type="string" indexed="false" stored="true" multiValued="false"/>
 
- <field name="contact_owner_name" type="string" indexed="false" stored="true" multiValued="false"/>
- <field name="contact_owner_organization" type="string" indexed="true" stored="true" multiValued="false"/>
- <field name="contact_owner_email" type="string" indexed="false" stored="true" multiValued="false"/>
-
- <field name="contact_publisher_name" type="string" indexed="false" stored="true" multiValued="false"/>
- <field name="contact_publisher_organization" type="string" indexed="true" stored="true" multiValued="false"/>
- <field name="contact_publisher_email" type="string" indexed="false" stored="true" multiValued="false"/>
 
 <!-- catchall field, containing all other searchable text fields (implemented
       via copyField further on in this schema  -->
