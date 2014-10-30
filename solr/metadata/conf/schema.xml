@@ -126,19 +126,13 @@
   <field name="abstract" type="text_no" indexed="true" stored="true" multiValued="false"/>
   <field name="purpose" type="text_no" indexed="true" stored="true" multiValued="false"/>
   <field name="type" type="string" indexed="true" stored="true" multiValued="false"/>
-  <field name="contact_metadata_organization" type="string" indexed="true" stored="true" multiValued="false"/>
-  <field name="contact_owner_organization" type="string" indexed="true" stored="true" multiValued="false"/>
-  <field name="contact_publisher_organization" type="string" indexed="true" stored="true" multiValued="false"/>
+  <field name="theme" type="string" indexed="true" stored="true" multiValued="false"/>
+  <field name="organization" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="topic_category" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="keyword" type="string" indexed="true" stored="true" multiValued="true"/>
 
   <!-- stored fields -->
-  <field name="contact_metadata_name" type="string" indexed="false" stored="true" multiValued="false"/>
-  <field name="contact_metadata_email" type="string" indexed="false" stored="true" multiValued="false"/>
-  <field name="contact_owner_name" type="string" indexed="false" stored="true" multiValued="false"/>
-  <field name="contact_owner_email" type="string" indexed="false" stored="true" multiValued="false"/>
-  <field name="contact_publisher_name" type="string" indexed="false" stored="true" multiValued="false"/>
-  <field name="contact_publisher_email" type="string" indexed="false" stored="true" multiValued="false"/>
+  <field name="organization_logo_url" type="string" indexed="false" stored="true" multiValued="false"/>
   <field name="date_published" type="string" indexed="false" stored="true" multiValued="false"/>
   <field name="date_updated" type="string" indexed="false" stored="true" multiValued="false"/>
   <field name="legend_description_url" type="string" indexed="false" stored="true" multiValued="false"/>
