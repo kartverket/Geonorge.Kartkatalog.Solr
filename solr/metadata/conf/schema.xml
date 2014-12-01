@@ -122,17 +122,22 @@
      installations. See the <uniqueKey> declaration below where <uniqueKey> is set to "id".
    -->   
   <field name="uuid" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
-  <field name="title" type="text_no" indexed="true" stored="true" multiValued="false"/>
-  <field name="abstract" type="text_no" indexed="true" stored="true" multiValued="false"/>
-  <field name="purpose" type="text_no" indexed="true" stored="true" multiValued="false"/>
+  <field name="title" type="string" indexed="true" stored="true" multiValued="false"/>
+  <field name="abstract" type="string" indexed="true" stored="true" multiValued="false"/>
+  <field name="purpose" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="type" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="theme" type="string" indexed="true" stored="true" multiValued="false"/>
+  <field name="place" type="string" indexed="true" stored="true" multiValued="true"/>
+  <field name="license" type="string" indexed="true" stored="true" multiValued="false"/>
+  <field name="nationalinitiative" type="string" indexed="true" stored="true" multiValued="true"/>
   <field name="organization" type="string" indexed="true" stored="true" multiValued="false"/>
+  <field name="organization2" type="string" indexed="true" stored="true" multiValued="false"/>
+  <field name="organization3" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="organization_seo_lowercase" type="lowercase" indexed="true" stored="true" multiValued="false"/>
 
   <field name="topic_category" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="keyword" type="string" indexed="true" stored="true" multiValued="true"/>
-
+  <field name="allText" type="text_no" indexed="true" stored="false" multiValued="true"/>
   <!-- stored fields -->
   <field name="organization_logo_url" type="string" indexed="false" stored="true" multiValued="false"/>
   <field name="date_published" type="string" indexed="false" stored="true" multiValued="false"/>
@@ -145,6 +150,18 @@
   <field name="distribution_url" type="string" indexed="false" stored="true" multiValued="false"/>
   <field name="distribution_protocol" type="string" indexed="false" stored="true" multiValued="false"/>
   <field name="maintenance_frequency" type="string" indexed="false" stored="true" multiValued="false"/>
+
+  <copyField source="uuid" dest="allText"/>
+  <copyField source="title" dest="allText"/>
+  <copyField source="abstract" dest="allText"/>
+  <copyField source="purpose" dest="allText"/>
+  <copyField source="type" dest="allText"/>
+  <copyField source="theme" dest="allText"/>
+  <copyField source="organization" dest="allText"/>
+  <copyField source="topic_category" dest="allText"/>
+  <copyField source="keyword" dest="allText"/>
+  <copyField source="organization2" dest="allText"/>
+  <copyField source="organization3" dest="allText"/>
 
 
 <!-- catchall field, containing all other searchable text fields (implemented
