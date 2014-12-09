@@ -134,10 +134,17 @@
   <field name="organization2" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="organization3" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="organization_seo_lowercase" type="lowercase" indexed="true" stored="true" multiValued="false"/>
+ 
+  <field name="title_lowercase" type="lowercase" indexed="true" stored="true" multiValued="false"/>
 
   <field name="topic_category" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="keyword" type="string" indexed="true" stored="true" multiValued="true"/>
-  <field name="allText" type="text_no" indexed="true" stored="false" multiValued="true"/>
+  <!-- exact and fuzzy -->
+  <field name="allText" type="text_exact" indexed="true" stored="false" multiValued="true"/>
+  <!-- stemmed -->
+  <field name="allText2" type="text_no" indexed="true" stored="false" multiValued="true"/>
+  <!-- phonetic -->
+  <field name="allText3" type="text_phonetic" indexed="true" stored="false" multiValued="true"/>
   <!-- stored fields -->
   <field name="organization_logo_url" type="string" indexed="false" stored="true" multiValued="false"/>
   <field name="date_published" type="string" indexed="false" stored="true" multiValued="false"/>
@@ -153,6 +160,7 @@
 
   <copyField source="uuid" dest="allText"/>
   <copyField source="title" dest="allText"/>
+  <copyField source="title" dest="title_lowercase"/>
   <copyField source="abstract" dest="allText"/>
   <copyField source="purpose" dest="allText"/>
   <copyField source="type" dest="allText"/>
@@ -162,6 +170,30 @@
   <copyField source="keyword" dest="allText"/>
   <copyField source="organization2" dest="allText"/>
   <copyField source="organization3" dest="allText"/>
+
+  <copyField source="uuid" dest="allText2"/>
+  <copyField source="title" dest="allText2"/>
+  <copyField source="abstract" dest="allText2"/>
+  <copyField source="purpose" dest="allText2"/>
+  <copyField source="type" dest="allText2"/>
+  <copyField source="theme" dest="allText2"/>
+  <copyField source="organization" dest="allText2"/>
+  <copyField source="topic_category" dest="allText2"/>
+  <copyField source="keyword" dest="allText2"/>
+  <copyField source="organization2" dest="allText2"/>
+  <copyField source="organization3" dest="allText2"/>
+
+  <copyField source="uuid" dest="allText3"/>
+  <copyField source="title" dest="allText3"/>
+  <copyField source="abstract" dest="allText3"/>
+  <copyField source="purpose" dest="allText3"/>
+  <copyField source="type" dest="allText3"/>
+  <copyField source="theme" dest="allText3"/>
+  <copyField source="organization" dest="allText3"/>
+  <copyField source="topic_category" dest="allText3"/>
+  <copyField source="keyword" dest="allText3"/>
+  <copyField source="organization2" dest="allText3"/>
+  <copyField source="organization3" dest="allText3"/>
 
 
 <!-- catchall field, containing all other searchable text fields (implemented
@@ -1134,6 +1166,23 @@
         <!-- less aggressive: <filter class="solr.NorwegianLightStemFilterFactory" variant="nb"/> -->
         <!-- singular/plural: <filter class="solr.NorwegianMinimalStemFilterFactory" variant="nb"/> -->
         <!-- The "light" and "minimal" stemmers support variants: nb=Bokmål, nn=Nynorsk, no=Both -->
+      </analyzer>
+    </fieldType>
+     <!-- Norwegian -->
+    <fieldType name="text_exact" class="solr.TextField" positionIncrementGap="100" omitNorms="false">
+      <analyzer> 
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.StopFilterFactory" ignoreCase="true" words="lang/stopwords_no.txt" format="snowball" />
+        <filter class="solr.StandardFilterFactory"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+    </fieldType>
+    <fieldType name="text_phonetic" class="solr.TextField" positionIncrementGap="100" >
+      <analyzer> 
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.StandardFilterFactory"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+        <filter class="solr.PhoneticFilterFactory" encoder="DoubleMetaphone" inject="false"/>
       </analyzer>
     </fieldType>
     
