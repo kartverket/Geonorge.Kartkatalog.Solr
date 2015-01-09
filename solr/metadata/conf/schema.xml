@@ -156,6 +156,7 @@
   <field name="thumbnail_url" type="string" indexed="false" stored="true" multiValued="false"/>
   <field name="distribution_url" type="string" indexed="false" stored="true" multiValued="false"/>
   <field name="distribution_protocol" type="string" indexed="false" stored="true" multiValued="false"/>
+  <field name="distribution_name" type="string" indexed="false" stored="true" multiValued="false"/>
   <field name="maintenance_frequency" type="string" indexed="false" stored="true" multiValued="false"/>
 
   <copyField source="uuid" dest="allText"/>
