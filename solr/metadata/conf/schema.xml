@@ -135,6 +135,11 @@
   <field name="organization" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="organization2" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="organization3" type="string" indexed="true" stored="true" multiValued="false"/>
+  
+  <field name="organizationContactname" type="string" indexed="false" stored="true" multiValued="false"/>
+  <field name="organization2Contactname" type="string" indexed="false" stored="true" multiValued="false"/>
+  <field name="organization3Contactname" type="string" indexed="false" stored="true" multiValued="false"/>
+
   <field name="organization_seo_lowercase" type="lowercase" indexed="true" stored="true" multiValued="false"/>
  
   <field name="title_lowercase" type="lowercase" indexed="true" stored="true" multiValued="false"/>
@@ -172,11 +177,16 @@
   <copyField source="purpose" dest="allText"/>
   <copyField source="type" dest="allText"/>
   <copyField source="theme" dest="allText"/>
-  <copyField source="organization" dest="allText"/>
+  <copyField source="organizationgroup" dest="allText"/>
   <copyField source="topic_category" dest="allText"/>
   <copyField source="keyword" dest="allText"/>
   <copyField source="organization2" dest="allText"/>
   <copyField source="organization3" dest="allText"/>
+
+  <copyField source="organizationContactname" dest="allText"/>
+  <copyField source="organization2Contactname" dest="allText"/>
+  <copyField source="organization3Contactname" dest="allText"/>
+  <copyField source="distribution_name" dest="allText"/>
 
   <copyField source="uuid" dest="allText2"/>
   <copyField source="title" dest="allText2"/>
@@ -184,11 +194,16 @@
   <copyField source="purpose" dest="allText2"/>
   <copyField source="type" dest="allText2"/>
   <copyField source="theme" dest="allText2"/>
-  <copyField source="organization" dest="allText2"/>
+  <copyField source="organizationgroup" dest="allText2"/>
   <copyField source="topic_category" dest="allText2"/>
   <copyField source="keyword" dest="allText2"/>
   <copyField source="organization2" dest="allText2"/>
   <copyField source="organization3" dest="allText2"/>
+
+  <copyField source="organizationContactname" dest="allText2"/>
+  <copyField source="organization2Contactname" dest="allText2"/>
+  <copyField source="organization3Contactname" dest="allText2"/>
+  <copyField source="distribution_name" dest="allText2"/>
 
   <copyField source="uuid" dest="allText3"/>
   <copyField source="title" dest="allText3"/>
@@ -196,12 +211,15 @@
   <copyField source="purpose" dest="allText3"/>
   <copyField source="type" dest="allText3"/>
   <copyField source="theme" dest="allText3"/>
-  <copyField source="organization" dest="allText3"/>
+  <copyField source="organizationgroup" dest="allText3"/>
   <copyField source="topic_category" dest="allText3"/>
   <copyField source="keyword" dest="allText3"/>
   <copyField source="organization2" dest="allText3"/>
   <copyField source="organization3" dest="allText3"/>
-
+  <copyField source="distribution_name" dest="allText3"/>
+  <copyField source="organizationContactname" dest="allText3"/>
+  <copyField source="organization2Contactname" dest="allText3"/>
+  <copyField source="organization3Contactname" dest="allText3"/>
 
 <!-- catchall field, containing all other searchable text fields (implemented
       via copyField further on in this schema  
@@ -382,12 +400,12 @@
 -->
    <!-- Create a string version of author for faceting 
    <copyField source="author" dest="author_s"/>
-  -->
+	-->
    <!-- Above, multiple source fields are copied to the [text] field. 
-    Another way to map multiple source fields to the same 
-    destination field is to use the dynamic field syntax. 
-    copyField also supports a maxChars to copy setting.  -->
-     
+	  Another way to map multiple source fields to the same 
+	  destination field is to use the dynamic field syntax. 
+	  copyField also supports a maxChars to copy setting.  -->
+	   
    <!-- <copyField source="*_t" dest="text" maxChars="3000"/> -->
 
    <!-- copy name to alphaNameSort, a field designed for sorting by name -->
@@ -414,8 +432,8 @@
     <!-- sortMissingLast and sortMissingFirst attributes are optional attributes are
          currently supported on types that are sorted internally as strings
          and on numeric types.
-       This includes "string","boolean", and, as of 3.5 (and 4.x),
-       int, float, long, date, double, including the "Trie" variants.
+	     This includes "string","boolean", and, as of 3.5 (and 4.x),
+	     int, float, long, date, double, including the "Trie" variants.
        - If sortMissingLast="true", then a sort on this field will cause documents
          without the field to come after documents with the field,
          regardless of the requested sort order (asc or desc).
@@ -554,9 +572,9 @@
 
     <!-- A general text field that has reasonable, generic
          cross-language defaults: it tokenizes with StandardTokenizer,
-   removes stop words from case-insensitive "stopwords.txt"
-   (empty by default), and down cases.  At query time only, it
-   also applies synonyms. -->
+	 removes stop words from case-insensitive "stopwords.txt"
+	 (empty by default), and down cases.  At query time only, it
+	 also applies synonyms. -->
     <fieldType name="text_general" class="solr.TextField" positionIncrementGap="100">
       <analyzer type="index">
         <tokenizer class="solr.StandardTokenizerFactory"/>
@@ -592,11 +610,11 @@
                 words="lang/stopwords_en.txt"
                 />
         <filter class="solr.LowerCaseFilterFactory"/>
-  <filter class="solr.EnglishPossessiveFilterFactory"/>
+	<filter class="solr.EnglishPossessiveFilterFactory"/>
         <filter class="solr.KeywordMarkerFilterFactory" protected="protwords.txt"/>
-  <!-- Optionally you may want to use this less aggressive stemmer instead of PorterStemFilterFactory:
+	<!-- Optionally you may want to use this less aggressive stemmer instead of PorterStemFilterFactory:
         <filter class="solr.EnglishMinimalStemFilterFactory"/>
-  -->
+	-->
         <filter class="solr.PorterStemFilterFactory"/>
       </analyzer>
       <analyzer type="query">
@@ -607,23 +625,23 @@
                 words="lang/stopwords_en.txt"
                 />
         <filter class="solr.LowerCaseFilterFactory"/>
-  <filter class="solr.EnglishPossessiveFilterFactory"/>
+	<filter class="solr.EnglishPossessiveFilterFactory"/>
         <filter class="solr.KeywordMarkerFilterFactory" protected="protwords.txt"/>
-  <!-- Optionally you may want to use this less aggressive stemmer instead of PorterStemFilterFactory:
+	<!-- Optionally you may want to use this less aggressive stemmer instead of PorterStemFilterFactory:
         <filter class="solr.EnglishMinimalStemFilterFactory"/>
-  -->
+	-->
         <filter class="solr.PorterStemFilterFactory"/>
       </analyzer>
     </fieldType>
 
     <!-- A text field with defaults appropriate for English, plus
-   aggressive word-splitting and autophrase features enabled.
-   This field is just like text_en, except it adds
-   WordDelimiterFilter to enable splitting and matching of
-   words on case-change, alpha numeric boundaries, and
-   non-alphanumeric chars.  This means certain compound word
-   cases will work, for example query "wi fi" will match
-   document "WiFi" or "wi-fi".
+	 aggressive word-splitting and autophrase features enabled.
+	 This field is just like text_en, except it adds
+	 WordDelimiterFilter to enable splitting and matching of
+	 words on case-change, alpha numeric boundaries, and
+	 non-alphanumeric chars.  This means certain compound word
+	 cases will work, for example query "wi fi" will match
+	 document "WiFi" or "wi-fi".
         -->
     <fieldType name="text_en_splitting" class="solr.TextField" positionIncrementGap="100" autoGeneratePhraseQueries="true">
       <analyzer type="index">
@@ -674,7 +692,7 @@
     </fieldType>
 
     <!-- Just like text_general except it reverses the characters of
-   each token, to enable more efficient leading wildcard queries. -->
+	 each token, to enable more efficient leading wildcard queries. -->
     <fieldType name="text_general_rev" class="solr.TextField" positionIncrementGap="100">
       <analyzer type="index">
         <tokenizer class="solr.StandardTokenizerFactory"/>
@@ -749,10 +767,10 @@
         a token of "foo|1.4"  would be indexed as "foo" with a payload of 1.4f
         Attributes of the DelimitedPayloadTokenFilterFactory : 
          "delimiter" - a one character delimiter. Default is | (pipe)
-   "encoder" - how to encode the following value into a playload
-      float -> org.apache.lucene.analysis.payloads.FloatEncoder,
-      integer -> o.a.l.a.p.IntegerEncoder
-      identity -> o.a.l.a.p.IdentityEncoder
+	 "encoder" - how to encode the following value into a playload
+	    float -> org.apache.lucene.analysis.payloads.FloatEncoder,
+	    integer -> o.a.l.a.p.IntegerEncoder
+	    identity -> o.a.l.a.p.IdentityEncoder
             Fully Qualified class name implementing PayloadEncoder, Encoder must have a no arg constructor.
          -->
         <filter class="solr.DelimitedPayloadTokenFilterFactory" encoder="float"/>
@@ -773,10 +791,10 @@
     -->
     <fieldType name="descendent_path" class="solr.TextField">
       <analyzer type="index">
-  <tokenizer class="solr.PathHierarchyTokenizerFactory" delimiter="/" />
+	<tokenizer class="solr.PathHierarchyTokenizerFactory" delimiter="/" />
       </analyzer>
       <analyzer type="query">
-  <tokenizer class="solr.KeywordTokenizerFactory" />
+	<tokenizer class="solr.KeywordTokenizerFactory" />
       </analyzer>
     </fieldType>
     <!-- 
@@ -785,10 +803,10 @@
     -->
     <fieldType name="ancestor_path" class="solr.TextField">
       <analyzer type="index">
-  <tokenizer class="solr.KeywordTokenizerFactory" />
+	<tokenizer class="solr.KeywordTokenizerFactory" />
       </analyzer>
       <analyzer type="query">
-  <tokenizer class="solr.PathHierarchyTokenizerFactory" delimiter="/" />
+	<tokenizer class="solr.PathHierarchyTokenizerFactory" delimiter="/" />
       </analyzer>
     </fieldType>
 
