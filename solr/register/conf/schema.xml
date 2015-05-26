@@ -150,7 +150,61 @@
   <field name="ParentregisterOwner" type="string" indexed="true" stored="true" required="false" multiValued="false" />
   <field name="CodelistValue" type="string" indexed="true" stored="true" required="false" multiValued="false" />
   <field name="Type" type="string" indexed="true" stored="true" required="false" multiValued="false" /> 
-  <field name="currentVersion" type="string" indexed="true" stored="true" required="false" multiValued="false" />                          
+  <field name="currentVersion" type="string" indexed="true" stored="true" required="false" multiValued="false" />     
+
+    <!-- exact and fuzzy -->
+  <field name="allText" type="text_exact" indexed="true" stored="false" multiValued="true"/>
+    <!-- stemmed -->
+  <field name="allText2" type="text_no" indexed="true" stored="false" multiValued="true"/>
+  <!-- phonetic -->
+  <field name="allText3" type="text_phonetic" indexed="true" stored="false" multiValued="true"/>
+
+  <copyField source="RegisterName" dest="allText"/>
+  <copyField source="RegisterDescription" dest="allText"/>
+  <copyField source="RegisterItemName" dest="allText"/> 
+  <copyField source="RegisterItemDescription" dest="allText"/>
+  <copyField source="RegisterID" dest="allText"/>
+  <copyField source="SystemID" dest="allText"/>
+  <copyField source="Discriminator" dest="allText"/>
+  <copyField source="RegisterItemStatus" dest="allText"/>
+  <copyField source="DocumentOwner" dest="allText"/>
+  <copyField source="Submitter" dest="allText"/>
+  <copyField source="Shortname" dest="allText"/>
+  <copyField source="DatasetOwner" dest="allText"/>
+  <copyField source="CodelistValue" dest="allText"/>
+  <copyField source="Type" dest="allText"/>
+
+
+  <copyField source="RegisterName" dest="allText2"/>
+  <copyField source="RegisterDescription" dest="allText2"/>
+  <copyField source="RegisterItemName" dest="allText2"/> 
+  <copyField source="RegisterItemDescription" dest="allText2"/>
+  <copyField source="RegisterID" dest="allText2"/>
+  <copyField source="SystemID" dest="allText2"/>
+  <copyField source="Discriminator" dest="allText2"/>
+  <copyField source="RegisterItemStatus" dest="allText2"/>
+  <copyField source="DocumentOwner" dest="allText2"/>
+  <copyField source="Submitter" dest="allText2"/>
+  <copyField source="Shortname" dest="allText2"/>
+  <copyField source="DatasetOwner" dest="allText2"/>
+  <copyField source="CodelistValue" dest="allText2"/>
+  <copyField source="Type" dest="allText2"/>
+
+  <copyField source="RegisterName" dest="allText3"/>
+  <copyField source="RegisterDescription" dest="allText3"/>
+  <copyField source="RegisterItemName" dest="allText3"/> 
+  <copyField source="RegisterItemDescription" dest="allText3"/>
+  <copyField source="RegisterID" dest="allText3"/>
+  <copyField source="SystemID" dest="allText3"/>
+  <copyField source="Discriminator" dest="allText3"/>
+  <copyField source="RegisterItemStatus" dest="allText3"/>
+  <copyField source="DocumentOwner" dest="allText3"/>
+  <copyField source="Submitter" dest="allText3"/>
+  <copyField source="Shortname" dest="allText3"/>
+  <copyField source="DatasetOwner" dest="allText3"/>
+  <copyField source="CodelistValue" dest="allText3"/>
+  <copyField source="Type" dest="allText3"/>
+
 
 <!-- catchall field, containing all other searchable text fields (implemented
       via copyField further on in this schema  
