@@ -136,7 +136,8 @@
   <field name="RegisteItemUrl" type="string" indexed="true" stored="true" required="false" multiValued="false" />
   <field name="SubregisterUrl" type="string" indexed="true" stored="true" required="false" multiValued="false" />
   <field name="RegisteItemUrlDocument" type="string" indexed="true" stored="true" required="false" multiValued="false" />
-  <field name="RegisteItemUrlDataset" type="string" indexed="true" stored="true" required="false" multiValued="false" />    
+  <field name="RegisteItemUrlDataset" type="string" indexed="true" stored="true" required="false" multiValued="false" /> 
+  <field name="subregisterItemUrl" type="string" indexed="true" stored="true" required="false" multiValued="false" />    
   <field name="ParentRegisterUrl" type="string" indexed="true" stored="true" required="false" multiValued="false" />   
   <field name="ObjektkatalogUrl" type="string" indexed="true" stored="true" required="false" multiValued="false" /> 
   <field name="Submitter" type="string" indexed="true" stored="true" required="false" multiValued="false" />
