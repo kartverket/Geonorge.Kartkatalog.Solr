@@ -153,13 +153,17 @@
   <field name="currentVersion" type="string" indexed="true" stored="true" required="false" multiValued="false" />
 
   
-  <field name="titleText" type="text_exact" indexed="true" stored="false" multiValued="true"/>
+  <field name="registerText" type="text_exact" indexed="true" stored="false" multiValued="true"/>
+  <field name="registerItemText" type="text_exact" indexed="true" stored="false" multiValued="true"/>
     <!-- exact and fuzzy -->
   <field name="allText" type="text_exact" indexed="true" stored="false" multiValued="true"/>
     <!-- stemmed -->
   <field name="allText2" type="text_no" indexed="true" stored="false" multiValued="true"/>
   <!-- phonetic -->
   <field name="allText3" type="text_phonetic" indexed="true" stored="false" multiValued="true"/>
+
+  <copyField source="RegisterName" dest="registerText"/>
+  <copyField source="RegisterItemName" dest="registerItemText"/>
 
   <copyField source="RegisterName" dest="allText"/>
   <copyField source="RegisterDescription" dest="allText"/>
