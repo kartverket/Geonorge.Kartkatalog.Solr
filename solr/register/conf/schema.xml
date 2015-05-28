@@ -149,8 +149,10 @@
   <field name="ParentRegisterSeoname" type="string" indexed="true" stored="true" required="false" multiValued="false" />
   <field name="ParentregisterOwner" type="string" indexed="true" stored="true" required="false" multiValued="false" />
   <field name="CodelistValue" type="string" indexed="true" stored="true" required="false" multiValued="false" />
-  <field name="Type" type="string" indexed="true" stored="true" required="false" multiValued="false" /> 
+  <field name="type" type="string" indexed="true" stored="true" required="false" multiValued="false" /> 
   <field name="currentVersion" type="string" indexed="true" stored="true" required="false" multiValued="false" />
+  <field name="theme" type="string" indexed="true"  stored="true" multiValued="false" default="annen" />
+  <field name="organization" type="string" indexed="true"  stored="true" multiValued="false" />
 
   
   <field name="registerText" type="text_exact" indexed="true" stored="false" multiValued="true"/>
@@ -178,7 +180,8 @@
   <copyField source="Shortname" dest="allText"/>
   <copyField source="DatasetOwner" dest="allText"/>
   <copyField source="CodelistValue" dest="allText"/>
-  <copyField source="Type" dest="allText"/>
+  <copyField source="type" dest="allText"/>
+  <copyField source="organization" dest="allText"/>
 
 
   <copyField source="RegisterName" dest="allText2"/>
@@ -194,7 +197,8 @@
   <copyField source="Shortname" dest="allText2"/>
   <copyField source="DatasetOwner" dest="allText2"/>
   <copyField source="CodelistValue" dest="allText2"/>
-  <copyField source="Type" dest="allText2"/>
+  <copyField source="type" dest="allText2"/>
+  <copyField source="organization" dest="allText2"/>
 
   <copyField source="RegisterName" dest="allText3"/>
   <copyField source="RegisterDescription" dest="allText3"/>
@@ -209,7 +213,8 @@
   <copyField source="Shortname" dest="allText3"/>
   <copyField source="DatasetOwner" dest="allText3"/>
   <copyField source="CodelistValue" dest="allText3"/>
-  <copyField source="Type" dest="allText3"/>
+  <copyField source="type" dest="allText3"/>
+  <copyField source="organization" dest="allText3"/>
 
 
 <!-- catchall field, containing all other searchable text fields (implemented
