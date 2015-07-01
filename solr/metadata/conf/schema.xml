@@ -164,10 +164,15 @@
   <field name="product_specification_url" type="string" indexed="false" stored="true" multiValued="false"/>
   <field name="thumbnail_url" type="string" indexed="false" stored="true" multiValued="false"/>
   <field name="distribution_url" type="string" indexed="false" stored="true" multiValued="false"/>
-  <field name="distribution_protocol" type="string" indexed="false" stored="true" multiValued="false"/>
+  <field name="distribution_protocol" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="distribution_name" type="string" indexed="false" stored="true" multiValued="false"/>
   <field name="maintenance_frequency" type="string" indexed="false" stored="true" multiValued="false"/>
   <field name="typenumber" type="int" indexed="true" stored="true" multiValued="false"/>
+  <field name="ServiceDistributionUrlForDataset" type="string" indexed="false" stored="true" multiValued="false"/>
+  <field name="ServiceDistributionProtocolForDataset" type="string" indexed="false" stored="true" multiValued="false"/>
+  <field name="ServiceDistributionNameForDataset" type="string" indexed="false" stored="true" multiValued="false"/>
+  <field name="DistributionProtocols" type="string" indexed="true" stored="true" multiValued="true"/>
+  
 
   <copyField source="uuid" dest="allText"/>
   <copyField source="title" dest="allText"/>
@@ -187,6 +192,8 @@
   <copyField source="organization2Contactname" dest="allText"/>
   <copyField source="organization3Contactname" dest="allText"/>
   <copyField source="distribution_name" dest="allText"/>
+  <copyField source="ServiceDistributionNameForDataset" dest="allText"/>
+  <copyField source="nationalinitiative" dest="allText"/>
 
   <copyField source="uuid" dest="allText2"/>
   <copyField source="title" dest="allText2"/>
@@ -204,6 +211,8 @@
   <copyField source="organization2Contactname" dest="allText2"/>
   <copyField source="organization3Contactname" dest="allText2"/>
   <copyField source="distribution_name" dest="allText2"/>
+  <copyField source="ServiceDistributionNameForDataset" dest="allText2"/>
+  <copyField source="nationalinitiative" dest="allText2"/>
 
   <copyField source="uuid" dest="allText3"/>
   <copyField source="title" dest="allText3"/>
@@ -220,6 +229,8 @@
   <copyField source="organizationContactname" dest="allText3"/>
   <copyField source="organization2Contactname" dest="allText3"/>
   <copyField source="organization3Contactname" dest="allText3"/>
+  <copyField source="ServiceDistributionNameForDataset" dest="allText3"/>
+  <copyField source="nationalinitiative" dest="allText3"/>
 
 <!-- catchall field, containing all other searchable text fields (implemented
       via copyField further on in this schema  
