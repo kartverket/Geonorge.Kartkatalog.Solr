@@ -1204,10 +1204,16 @@
     </fieldType>
      <!-- Norwegian -->
     <fieldType name="text_exact" class="solr.TextField" positionIncrementGap="100" omitNorms="false">
-      <analyzer> 
+      <analyzer type="index"> 
         <tokenizer class="solr.StandardTokenizerFactory"/>
         <filter class="solr.StopFilterFactory" ignoreCase="true" words="lang/stopwords_no.txt" format="snowball" />
         <filter class="solr.StandardFilterFactory"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+      <analyzer type="query">
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.StopFilterFactory" ignoreCase="true" words="lang/stopwords_no.txt" format="snowball" />
+        <filter class="solr.SynonymFilterFactory" synonyms="lang/synonyms_no.txt" ignoreCase="true" expand="true"/>
         <filter class="solr.LowerCaseFilterFactory"/>
       </analyzer>
     </fieldType>
