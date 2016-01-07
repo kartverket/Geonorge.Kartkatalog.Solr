@@ -141,6 +141,8 @@
   <field name="organization3Contactname" type="string" indexed="false" stored="true" multiValued="false"/>
 
   <field name="organization_seo_lowercase" type="lowercase" indexed="true" stored="true" multiValued="false"/>
+  <field name="organization_shortname" type="string" indexed="true" stored="true" multiValued="false"/>
+  <field name="organization_shortname_lowercase" type="lowercase" indexed="true" stored="true" multiValued="false"/>
  
   <field name="title_lowercase" type="lowercase" indexed="true" stored="true" multiValued="false"/>
 
@@ -192,6 +194,9 @@
   <copyField source="keyword" dest="allText"/>
   <copyField source="organization2" dest="allText"/>
   <copyField source="organization3" dest="allText"/>
+  <copyField source="organization3" dest="allText"/>
+  <copyField source="organization_shortname" dest="allText"/>
+  <copyField source="organization_shortname" dest="organization_shortname_lowercase"/>
 
   <copyField source="organizationContactname" dest="allText"/>
   <copyField source="organization2Contactname" dest="allText"/>
