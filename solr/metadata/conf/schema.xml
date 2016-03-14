@@ -177,6 +177,7 @@
   <field name="area" type="string" indexed="true" stored="true" multiValued="true"/>
   <field name="datasetservice" type="string" indexed="false" stored="true" multiValued="true"/>
   <field name="bundle" type="string" indexed="false" stored="true" multiValued="true"/>
+  <field name="servicelayers" type="string" indexed="false" stored="true" multiValued="true"/>
 
   <fieldType name="popularMetadataFile" keyField="uuid" defVal="0" stored="true" indexed="true" class="solr.ExternalFileField" valType="float" />
   <field name="popularMetadata" type="popularMetadataFile" indexed="true" stored="true" />
