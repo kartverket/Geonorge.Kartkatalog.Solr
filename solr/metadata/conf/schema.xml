@@ -176,6 +176,7 @@
   <field name="DistributionProtocols" type="string" indexed="true" stored="true" multiValued="true"/>
   <field name="area" type="string" indexed="true" stored="true" multiValued="true"/>
   <field name="datasetservice" type="string" indexed="false" stored="true" multiValued="true"/>
+  <field name="servicedataset" type="string" indexed="false" stored="true" multiValued="true"/>
   <field name="bundle" type="string" indexed="false" stored="true" multiValued="true"/>
   <field name="servicelayers" type="string" indexed="false" stored="true" multiValued="true"/>
   <field name="accessconstraint" type="string" indexed="false" stored="true" multiValued="false"/>
