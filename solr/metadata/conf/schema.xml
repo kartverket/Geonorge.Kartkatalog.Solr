@@ -173,6 +173,7 @@
   <field name="ServiceDistributionUrlForDataset" type="string" indexed="false" stored="true" multiValued="false"/>
   <field name="ServiceDistributionProtocolForDataset" type="string" indexed="false" stored="true" multiValued="false"/>
   <field name="ServiceDistributionNameForDataset" type="string" indexed="false" stored="true" multiValued="false"/>
+  <field name="ServiceDistributionUuidForDataset" type="string" indexed="false" stored="true" multiValued="false"/>
   <field name="DistributionProtocols" type="string" indexed="true" stored="true" multiValued="true"/>
   <field name="area" type="string" indexed="true" stored="true" multiValued="true"/>
   <field name="datasetservice" type="string" indexed="false" stored="true" multiValued="true"/>
