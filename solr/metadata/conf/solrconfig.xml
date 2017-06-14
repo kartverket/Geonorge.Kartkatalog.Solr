@@ -329,6 +329,11 @@
       -->
      <infoStream>true</infoStream>
     
+    <!--
+        Use true to enable this safety check, which can help
+        reduce the risk of propagating index corruption from older segments 
+        into new ones, at the expense of slower merging.
+    -->
   </indexConfig>
 
 
@@ -1162,6 +1167,12 @@
   <requestHandler name="/analysis/document" 
                   class="solr.DocumentAnalysisRequestHandler" 
                   startup="lazy" />
+
+  <!-- Admin Handlers
+
+       Admin Handlers - This will register all the standard admin
+       RequestHandlers.  
+    -->
 
   <!-- This single handler is equivalent to the following... -->
   <!--
