@@ -121,10 +121,14 @@
      required, it is highly recommended. A <uniqueKey> is present in almost all Solr 
      installations. See the <uniqueKey> declaration below where <uniqueKey> is set to "id".
    -->   
-  <field name="RegisterName" type="string" indexed="true" stored="true" required="false" multiValued="false" /> 
-  <field name="RegisterDescription" type="string" indexed="true" stored="true" required="false" multiValued="false" /> 
-  <field name="RegisterItemName" type="string" indexed="true" stored="true" required="false" multiValued="false" /> 
-  <field name="RegisterItemDescription" type="string" indexed="true" stored="true" required="false" multiValued="false" /> 
+  <field name="RegisterName" type="string" indexed="true" stored="true" required="false" multiValued="false" />
+  <field name="RegisterName_en" type="string" indexed="true" stored="true" required="false" multiValued="false" />  
+  <field name="RegisterDescription" type="string" indexed="true" stored="true" required="false" multiValued="false" />
+  <field name="RegisterDescription_en" type="string" indexed="true" stored="true" required="false" multiValued="false" /> 
+  <field name="RegisterItemName" type="string" indexed="true" stored="true" required="false" multiValued="false" />
+  <field name="RegisterItemName_en" type="string" indexed="true" stored="true" required="false" multiValued="false" /> 
+  <field name="RegisterItemDescription" type="string" indexed="true" stored="true" required="false" multiValued="false" />
+  <field name="RegisterItemDescription_en" type="string" indexed="true" stored="true" required="false" multiValued="false" /> 
   <field name="RegisterID" type="string" indexed="true" stored="true" required="false" multiValued="false" /> 
   <field name="SystemID" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
   <field name="Discriminator" type="string" indexed="true" stored="true" required="false" multiValued="false" /> 
@@ -153,19 +157,27 @@
   <field name="currentVersion" type="string" indexed="true" stored="true" required="false" multiValued="false" />
   <field name="theme" type="string" indexed="true"  stored="true" multiValued="false" default="annen" />
   <field name="organization" type="string" indexed="true"  stored="true" multiValued="false" />
+  <field name="organization_en" type="string" indexed="true"  stored="true" multiValued="false" />
 
   
   <field name="registerText" type="text_exact" indexed="true" stored="false" multiValued="true"/>
+  <field name="registerText_en" type="text_exact" indexed="true" stored="false" multiValued="true"/>
   <field name="registerItemText" type="text_exact" indexed="true" stored="false" multiValued="true"/>
+  <field name="registerItemText_en" type="text_exact" indexed="true" stored="false" multiValued="true"/>
+
     <!-- exact and fuzzy -->
   <field name="allText" type="text_exact" indexed="true" stored="false" multiValued="true"/>
+  <field name="allText_en" type="text_exact" indexed="true" stored="false" multiValued="true"/>
     <!-- stemmed -->
   <field name="allText2" type="text_no" indexed="true" stored="false" multiValued="true"/>
+  <field name="allText2_en" type="text_en" indexed="true" stored="false" multiValued="true"/>
   <!-- phonetic -->
   <field name="allText3" type="text_phonetic" indexed="true" stored="false" multiValued="true"/>
 
   <copyField source="RegisterName" dest="registerText"/>
+  <copyField source="RegisterName_en" dest="registerText_en"/>
   <copyField source="RegisterItemName" dest="registerItemText"/>
+  <copyField source="RegisterItemName_en" dest="registerItemText_en"/>
 
   <copyField source="RegisterName" dest="allText"/>
   <copyField source="RegisterDescription" dest="allText"/>
@@ -183,6 +195,22 @@
   <copyField source="type" dest="allText"/>
   <copyField source="organization" dest="allText"/>
 
+  <copyField source="RegisterName_en" dest="allText_en"/>
+  <copyField source="RegisterDescription_en" dest="allText_en"/>
+  <copyField source="RegisterItemName_en" dest="allText"/> 
+  <copyField source="RegisterItemDescription_en" dest="allText_en"/>
+  <copyField source="RegisterID" dest="allText_en"/>
+  <copyField source="SystemID" dest="allText_en"/>
+  <copyField source="Discriminator" dest="allText_en"/>
+  <copyField source="RegisterItemStatus" dest="allText_en"/>
+  <copyField source="DocumentOwner" dest="allText_en"/>
+  <copyField source="Submitter" dest="allText_en"/>
+  <copyField source="Shortname" dest="allText_en"/>
+  <copyField source="DatasetOwner" dest="allText_en"/>
+  <copyField source="CodelistValue" dest="allText_en"/>
+  <copyField source="type" dest="allText_en"/>
+  <copyField source="organization_en" dest="allText_en"/>
+
 
   <copyField source="RegisterName" dest="allText2"/>
   <copyField source="RegisterDescription" dest="allText2"/>
@@ -199,6 +227,23 @@
   <copyField source="CodelistValue" dest="allText2"/>
   <copyField source="type" dest="allText2"/>
   <copyField source="organization" dest="allText2"/>
+
+
+  <copyField source="RegisterName_en" dest="allText2_en"/>
+  <copyField source="RegisterDescription_en" dest="allText2_en"/>
+  <copyField source="RegisterItemName_en" dest="allText2_en"/> 
+  <copyField source="RegisterItemDescription_en" dest="allText2_en"/>
+  <copyField source="RegisterID" dest="allText2_en"/>
+  <copyField source="SystemID" dest="allText2_en"/>
+  <copyField source="Discriminator" dest="allText2_en"/>
+  <copyField source="RegisterItemStatus" dest="allText2_en"/>
+  <copyField source="DocumentOwner" dest="allText2_en"/>
+  <copyField source="Submitter" dest="allText2_en"/>
+  <copyField source="Shortname" dest="allText2_en"/>
+  <copyField source="DatasetOwner" dest="allText2_en"/>
+  <copyField source="CodelistValue" dest="allText2_en"/>
+  <copyField source="type" dest="allText2_en"/>
+  <copyField source="organization_en" dest="allText2_en"/>
 
   <copyField source="RegisterName" dest="allText3"/>
   <copyField source="RegisterDescription" dest="allText3"/>
