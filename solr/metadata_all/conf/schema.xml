@@ -123,8 +123,11 @@
    -->   
   <field name="uuid" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
   <field name="title" type="string" indexed="true" stored="true" multiValued="false"/>
+  <field name="title_en" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="abstract" type="string" indexed="true" stored="true" multiValued="false"/>
+  <field name="abstract_en" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="purpose" type="string" indexed="true" stored="true" multiValued="false"/>
+  <field name="purpose_en" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="type" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="theme" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="place" type="string" indexed="true" stored="true" multiValued="true"/>
@@ -133,8 +136,11 @@
   <field name="nationalinitiative" type="string" indexed="true" stored="true" multiValued="true"/>
   <field name="organizationgroup" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="organization" type="string" indexed="true" stored="true" multiValued="false"/>
+  <field name="organization_en" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="organization2" type="string" indexed="true" stored="true" multiValued="false"/>
+  <field name="organization2_en" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="organization3" type="string" indexed="true" stored="true" multiValued="false"/>
+  <field name="organization3_en" type="string" indexed="true" stored="true" multiValued="false"/>
   
   <field name="organizationContactname" type="string" indexed="false" stored="true" multiValued="false"/>
   <field name="organization2Contactname" type="string" indexed="false" stored="true" multiValued="false"/>
@@ -142,18 +148,24 @@
 
   <field name="organization_seo_lowercase" type="lowercase" indexed="true" stored="true" multiValued="false"/>
   <field name="organization_shortname" type="string" indexed="true" stored="true" multiValued="false"/>
+  <field name="organization_shortname_en" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="organization_shortname_lowercase" type="lowercase" indexed="true" stored="true" multiValued="false"/>
+  <field name="organization_shortname_lowercase_en" type="lowercase" indexed="true" stored="true" multiValued="false"/>
  
   <field name="title_lowercase" type="lowercase" indexed="true" stored="true" multiValued="false"/>
+  <field name="title_lowercase_en" type="lowercase" indexed="true" stored="true" multiValued="false"/>
 
   <field name="topic_category" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="keyword" type="string" indexed="true" stored="true" multiValued="true"/>
 
   <field name="titleText" type="text_exact" indexed="true" stored="false" multiValued="true"/>
+  <field name="titleText_en" type="text_exact" indexed="true" stored="false" multiValued="true"/>
   <!-- exact and fuzzy -->
   <field name="allText" type="text_exact" indexed="true" stored="false" multiValued="true"/>
+  <field name="allText_en" type="text_exact" indexed="true" stored="false" multiValued="true"/>
   <!-- stemmed -->
   <field name="allText2" type="text_no" indexed="true" stored="false" multiValued="true"/>
+  <field name="allText2_en" type="text_en" indexed="true" stored="false" multiValued="true"/>
   <!-- phonetic -->
   <field name="allText3" type="text_phonetic" indexed="true" stored="false" multiValued="true"/>
   <!-- stored fields -->
@@ -247,6 +259,49 @@
   <copyField source="organization2Contactname" dest="allText3"/>
   <copyField source="organization3Contactname" dest="allText3"/>
   <copyField source="ServiceDistributionNameForDataset" dest="allText3"/>
+
+
+  <copyField source="uuid" dest="allText_en"/>
+  <copyField source="title_en" dest="allText_en"/>
+  <copyField source="title_en" dest="title_lowercase_en"/>
+  <copyField source="title_en" dest="titleText_en"/>
+  <copyField source="abstract_en" dest="allText_en"/>
+  <copyField source="purpose_en" dest="allText_en"/>
+  <copyField source="type" dest="allText_en"/>
+  <copyField source="theme" dest="allText_en"/>
+  <copyField source="organizationgroup" dest="allText_en"/>
+  <copyField source="topic_category" dest="allText_en"/>
+  <copyField source="keyword" dest="allText_en"/>
+  <copyField source="organization2_en" dest="allText_en"/>
+  <copyField source="organization3_en" dest="allText_en"/>
+  <copyField source="organization3_en" dest="allText_en"/>
+  <copyField source="organization_shortname_en" dest="allText_en"/>
+  <copyField source="organization_shortname_en" dest="organization_shortname_lowercase_en"/>
+
+  <copyField source="organizationContactname" dest="allText_en"/>
+  <copyField source="organization2Contactname" dest="allText_en"/>
+  <copyField source="organization3Contactname" dest="allText_en"/>
+  <copyField source="distribution_name" dest="allText_en"/>
+  <copyField source="ServiceDistributionNameForDataset" dest="allText_en"/>
+
+  <copyField source="uuid" dest="allText2_en"/>
+  <copyField source="title_en" dest="allText2_en"/>
+  <copyField source="abstract_en" dest="allText2_en"/>
+  <copyField source="purpose_en" dest="allText2_en"/>
+  <copyField source="type" dest="allText2_en"/>
+  <copyField source="theme" dest="allText2_en"/>
+  <copyField source="organizationgroup" dest="allText2_en"/>
+  <copyField source="topic_category" dest="allText2_en"/>
+  <copyField source="keyword" dest="allText2_en"/>
+  <copyField source="organization2_en" dest="allText2_en"/>
+  <copyField source="organization3_en" dest="allText2_en"/>
+
+  <copyField source="organizationContactname" dest="allText2_en"/>
+  <copyField source="organization2Contactname" dest="allText2_en"/>
+  <copyField source="organization3Contactname" dest="allText2_en"/>
+  <copyField source="distribution_name" dest="allText2_en"/>
+  <copyField source="ServiceDistributionNameForDataset" dest="allText2_en"/>
+
 
 <!-- catchall field, containing all other searchable text fields (implemented
       via copyField further on in this schema  
