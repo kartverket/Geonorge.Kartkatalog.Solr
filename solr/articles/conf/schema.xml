@@ -122,7 +122,7 @@
      installations. See the <uniqueKey> declaration below where <uniqueKey> is set to "id".
    -->   
   <field name="Id" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
-  <field name="Heading" type="string" indexed="true" stored="true" multiValued="false"/>
+  <field name="title" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="LinkUrl" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="MainIntro" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="MainBody" type="string" indexed="true" stored="true" multiValued="false"/>
@@ -130,15 +130,16 @@
   <field name="Author" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="LinkArea" type="string" indexed="true" stored="true" multiValued="true"/>
 
+  <field name="TitleText" type="text_exact" indexed="true" stored="false" multiValued="true"/>
   <!-- exact and fuzzy -->
   <field name="allText" type="text_exact" indexed="true" stored="false" multiValued="true"/>
   <!-- stemmed -->
   <field name="allText2" type="text_no" indexed="true" stored="false" multiValued="true"/>
 
+  <copyField source="title" dest="TitleText"/>
+  <copyField source="title" dest="allText"/>
 
-  <copyField source="Heading" dest="allText"/>
-
-  <copyField source="Heading" dest="allText2"/>
+  <copyField source="title" dest="allText2"/>
   <copyField source="MainIntro" dest="allText2"/>
   <copyField source="MainBody" dest="allText2"/>
 
