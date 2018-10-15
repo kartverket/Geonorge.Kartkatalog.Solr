@@ -195,7 +195,6 @@
   <copyField source="title" dest="title_lowercase"/>
   <copyField source="title" dest="titleText"/>
   <copyField source="abstract" dest="allText"/>
-  <copyField source="purpose" dest="allText"/>
   <copyField source="type" dest="allText"/>
   <copyField source="theme" dest="allText"/>
   <copyField source="organizationgroup" dest="allText"/>
@@ -216,7 +215,6 @@
   <copyField source="uuid" dest="allText2"/>
   <copyField source="title" dest="allText2"/>
   <copyField source="abstract" dest="allText2"/>
-  <copyField source="purpose" dest="allText2"/>
   <copyField source="type" dest="allText2"/>
   <copyField source="theme" dest="allText2"/>
   <copyField source="organizationgroup" dest="allText2"/>
@@ -234,7 +232,6 @@
   <copyField source="uuid" dest="allText3"/>
   <copyField source="title" dest="allText3"/>
   <copyField source="abstract" dest="allText3"/>
-  <copyField source="purpose" dest="allText3"/>
   <copyField source="type" dest="allText3"/>
   <copyField source="theme" dest="allText3"/>
   <copyField source="organizationgroup" dest="allText3"/>
