@@ -122,6 +122,7 @@
      installations. See the <uniqueKey> declaration below where <uniqueKey> is set to "id".
    -->   
   <field name="Id" type="string" indexed="true" stored="true" required="true" multiValued="false" /> 
+  <field name="Type" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="title" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="LinkUrl" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="MainIntro" type="string" indexed="true" stored="true" multiValued="false"/>
