@@ -136,7 +136,8 @@
   <field name="allText" type="text_exact" indexed="true" stored="false" multiValued="true"/>
   <!-- stemmed -->
   <field name="allText2" type="text_no" indexed="true" stored="false" multiValued="true"/>
-
+  <!-- phonetic -->
+  <field name="allText3" type="text_phonetic" indexed="true" stored="false" multiValued="true"/>
   <copyField source="title" dest="TitleText"/>
   <copyField source="title" dest="allText"/>
 
@@ -144,6 +145,9 @@
   <copyField source="MainIntro" dest="allText2"/>
   <copyField source="MainBody" dest="allText2"/>
 
+  <copyField source="title" dest="allText3"/>
+  <copyField source="MainIntro" dest="allText3"/>
+  <copyField source="MainBody" dest="allText3"/>
 
 <!-- catchall field, containing all other searchable text fields (implemented
       via copyField further on in this schema  
