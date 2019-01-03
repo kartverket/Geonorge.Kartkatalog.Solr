@@ -187,6 +187,9 @@
   <field name="dataaccess" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="parentidentifier" type="string" indexed="true" stored="true" multiValued="false" />
 
+  <field name="resourceReferenceCodespace" type="string" indexed="true" stored="true" multiValued="false" />
+  <field name="resourceReferenceCodeName" type="string" indexed="true" stored="true" multiValued="false" />
+
   <fieldType name="popularMetadataFile" keyField="uuid" defVal="0" stored="true" indexed="true" class="solr.ExternalFileField" valType="float" />
   <field name="popularMetadata" type="popularMetadataFile" indexed="true" stored="true" />
 
