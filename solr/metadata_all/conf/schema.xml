@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8" ?>
+<?xml version="1.0" encoding="UTF-8" ?>
 <!--
  Licensed to the Apache Software Foundation (ASF) under one or more
  contributor license agreements.  See the NOTICE file distributed with
@@ -183,6 +183,9 @@
   <field name="bundle" type="string" indexed="false" stored="true" multiValued="true"/>
   <field name="servicelayers" type="string" indexed="false" stored="true" multiValued="true"/>
   <field name="applicationdataset" type="string" indexed="false" stored="true" multiValued="true"/>
+  <field name="seriedatasets" type="string" indexed="false" stored="true" multiValued="true"/>
+  <field name="serie" type="string" indexed="true" stored="true" multiValued="false" />
+  <field name="typename" type="string" indexed="true" stored="true" multiValued="false" />
   <field name="accessconstraint" type="string" indexed="false" stored="true" multiValued="false"/>
   <field name="otherconstraintsaccess" type="string" indexed="false" stored="true" multiValued="false"/>
   <field name="dataaccess" type="string" indexed="true" stored="true" multiValued="false"/>

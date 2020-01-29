@@ -183,6 +183,9 @@
   <field name="bundle" type="string" indexed="false" stored="true" multiValued="true"/>
   <field name="servicelayers" type="string" indexed="false" stored="true" multiValued="true"/>
   <field name="applicationdataset" type="string" indexed="true" stored="true" multiValued="true"/>
+  <field name="seriedatasets" type="string" indexed="false" stored="true" multiValued="true"/>
+  <field name="serie" type="string" indexed="true" stored="true" multiValued="false" />
+  <field name="typename" type="string" indexed="true" stored="true" multiValued="false" />
   <field name="accessconstraint" type="string" indexed="false" stored="true" multiValued="false"/>
   <field name="otherconstraintsaccess" type="string" indexed="false" stored="true" multiValued="false"/>
   <field name="dataaccess" type="string" indexed="true" stored="true" multiValued="false"/>
