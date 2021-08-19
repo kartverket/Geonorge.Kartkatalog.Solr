@@ -143,7 +143,7 @@
   <!-- exact and fuzzy -->
   <field name="allText" type="text_ws" indexed="true" stored="false" multiValued="true"/>
   <!-- stemmed -->
-  <field name="allText2" type="text_no" indexed="true" stored="false" multiValued="true"/>
+  <field name="allText2" type="text_general" indexed="true" stored="false" multiValued="true"/>
   <!-- phonetic -->
   <field name="allText3" type="phonetic" indexed="true" stored="false" multiValued="true"/>
   <copyField source="title" dest="TitleText"/>
