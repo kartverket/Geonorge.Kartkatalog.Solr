@@ -20,20 +20,27 @@
 // permissions needed for tests to pass, based on properties set by the build system
 // NOTE: if the property is not set, the permission entry is ignored.
 grant {
-  // contain read access to only what we need:
   // 3rd party jar resources (where symlinks are not supported), test-files/ resources
   permission java.io.FilePermission "${common.dir}${/}-", "read";
   permission java.io.FilePermission "${common.dir}${/}..${/}solr${/}-", "read";
-  // 3rd party jar resources (where symlinks are supported)
-  permission java.io.FilePermission "${user.home}${/}.ivy2${/}cache${/}-", "read";
+
   // system jar resources
   permission java.io.FilePermission "${java.home}${/}-", "read";
+
+  // tmpdir
+  permission java.io.FilePermission "${java.io.tmpdir}", "read,write";
+  permission java.io.FilePermission "${java.io.tmpdir}${/}-", "read,write,delete";
+
+  // Test launchers (randomizedtesting, etc.)
   permission java.io.FilePermission "${junit4.childvm.cwd}", "read";
   permission java.io.FilePermission "${junit4.childvm.cwd}${/}temp", "read,write,delete";
   permission java.io.FilePermission "${junit4.childvm.cwd}${/}temp${/}-", "read,write,delete";
   permission java.io.FilePermission "${junit4.childvm.cwd}${/}jacoco.db", "write";
   permission java.io.FilePermission "${junit4.tempDir}${/}*", "read,write,delete";
   permission java.io.FilePermission "${clover.db.dir}${/}-", "read,write,delete";
+  // 3rd party jar resources (where symlinks are supported)
+  permission java.io.FilePermission "${user.home}${/}.ivy2${/}cache${/}-", "read";
+
   permission java.io.FilePermission "${tests.linedocsfile}", "read";
   // DirectoryFactoryTest messes with these (wtf?)
   permission java.io.FilePermission "/tmp/inst1/conf/solrcore.properties", "read";
@@ -42,7 +49,7 @@ grant {
   permission java.io.FilePermission "/path/to/solr/home/lib", "read";
 
   permission java.nio.file.LinkPermission "hard";
-  
+
   // all possibilities of accepting/binding/connections on localhost with ports >=1024:
   permission java.net.SocketPermission "localhost:1024-", "accept,listen,connect,resolve";
   permission java.net.SocketPermission "127.0.0.1:1024-", "accept,listen,connect,resolve";
@@ -55,10 +62,10 @@ grant {
   // Basic permissions needed for Lucene to work:
   permission java.util.PropertyPermission "*", "read,write";
 
-  // needed by gson serialization of junit4 runner: TODO clean that up
+  // needed by randomizedtesting runner to identify test methods.
   permission java.lang.reflect.ReflectPermission "suppressAccessChecks";
   permission java.lang.RuntimePermission "accessDeclaredMembers";
-  // needed by junit4 runner to capture sysout/syserr:
+  // needed by certain tests to redirect sysout/syserr:
   permission java.lang.RuntimePermission "setIO";
   // needed by randomized runner to catch failures from other threads:
   permission java.lang.RuntimePermission "setDefaultUncaughtExceptionHandler";
@@ -70,7 +77,7 @@ grant {
   permission java.lang.RuntimePermission "getStackTrace";
   // needed for mock filesystems in tests
   permission java.lang.RuntimePermission "fileSystemProvider";
-  // needed for test of IOUtils.spins (maybe it can be avoided)
+  // needed by IndexFetcher
   permission java.lang.RuntimePermission "getFileStoreAttributes";
   // analyzers/uima: needed by lucene expressions' JavascriptCompiler
   permission java.lang.RuntimePermission "createClassLoader";
@@ -104,17 +111,13 @@ grant {
   // needed by hadoop http
   permission java.lang.RuntimePermission "getProtectionDomain";
   // needed by aws s3 sdk (Apache HTTP Client)
-  permission java.lang.RuntimePermission "setFactory";
   permission java.lang.RuntimePermission "accessClassInPackage.jdk.internal.reflect";
 
   // These two *have* to be spelled out a separate
   permission java.lang.management.ManagementPermission "control";
   permission java.lang.management.ManagementPermission "monitor";
 
-  // needed by hadoop htrace
-  permission java.net.NetPermission "getNetworkInformation";
-
-  // needed by DIH
+  // needed by DIH - possibly even after DIH is a package
   permission java.sql.SQLPermission "deregisterDriver";
 
   permission java.util.logging.LoggingPermission "control";
@@ -146,6 +149,9 @@ grant {
   permission java.security.SecurityPermission "putProviderProperty.SaslPlainServer";
   permission java.security.SecurityPermission "insertProvider";
 
+  // Needed by JWT integration tests & S3 clients
+  permission java.lang.RuntimePermission "setFactory";
+
   permission javax.xml.bind.JAXBPermission "setDatatypeConverter";
 
   // SSL related properties for Solr tests
@@ -167,6 +173,10 @@ grant {
 
   // used by solr to create sandboxes (e.g. script execution)
   permission java.security.SecurityPermission "createAccessControlContext";
+
+  // for Apache HttpClient useSystemProperties
+  permission java.net.NetPermission "getProxySelector";
+  permission java.net.NetPermission "requestPasswordAuthentication";
 };
 
 // additional permissions based on system properties set by /bin/solr
@@ -183,6 +193,8 @@ grant {
 
   permission java.io.FilePermission "${solr.install.dir}", "read,write,delete,readlink";
   permission java.io.FilePermission "${solr.install.dir}${/}-", "read,write,delete,readlink";
+  permission java.io.FilePermission "${solr.install.symDir}", "read,write,delete,readlink";
+  permission java.io.FilePermission "${solr.install.symDir}${/}-", "read,write,delete,readlink";
 
   permission java.io.FilePermission "${jetty.home}", "read,write,delete,readlink";
   permission java.io.FilePermission "${jetty.home}${/}-", "read,write,delete,readlink";

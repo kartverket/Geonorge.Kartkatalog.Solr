@@ -448,6 +448,9 @@ solrAdminApp.controller('SchemaDesignerController', function ($scope, $timeout, 
       $scope.sampleDocIds = [];
     }
 
+    // re-apply the filters on the updated schema
+    $scope.onTreeFilterOptionChanged();
+
     // Load the Luke schema
     Luke.schema({core: data.core}, function (schema) {
       Luke.raw({core: data.core}, function (index) {
@@ -457,8 +460,6 @@ solrAdminApp.controller('SchemaDesignerController', function ($scope, $timeout, 
         if (!nodeId) {
           nodeId = "/";
         }
-        // re-apply the filters on the updated schema
-        $scope.applyTreeFilterOption();
         $scope.onSelectSchemaTreeNode(nodeId);
 
         $scope.updateWorking = false;
@@ -1989,6 +1990,7 @@ solrAdminApp.controller('SchemaDesignerController', function ($scope, $timeout, 
   $scope.initTreeFilters = function() {
     $scope.treeFilterFeatureEnabled = "true";
     $scope.treeFilterOptions = [];
+    $scope.treeFilterOption = "";
     if ($scope.treeFilter === "type") {
       var usedFieldTypes = [];
       if ($scope.fields) {
@@ -2001,15 +2003,11 @@ solrAdminApp.controller('SchemaDesignerController', function ($scope, $timeout, 
       }
       $scope.treeFilterOptions = usedFieldTypes.sort();
       $scope.treeFilterOptions.unshift("*");
-      if (!$scope.treeFilterOption) {
-        $scope.treeFilterOption = "*";
-      }
+      $scope.treeFilterOption = "*";
     } else if ($scope.treeFilter === "feature") {
       $scope.treeFilterOptions = ["indexed","text","facet","highlight","sortable","docValues","stored"].sort();
       $scope.treeFilterOptions.unshift("*");
-      if (!$scope.treeFilterOption) {
-        $scope.treeFilterOption = "*";
-      }
+      $scope.treeFilterOption = "*";
     }
   };
 

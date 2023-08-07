@@ -33,8 +33,8 @@ function($scope, $rootScope, $routeParams, Luke, CoreSystem, Update, Replication
   $scope.refreshReplication = function() {
     Replication.details({core: $routeParams.core},
       function(data) {
-        $scope.isFollower = data.details.isSlave == "true";
-        $scope.isLeader = data.details.isMaster == "true";
+        $scope.isFollower = data.details.isFollower == "true";
+        $scope.isLeader = data.details.isLeader == "true";
         $scope.replication = data.details;
       },
       function(error) {
@@ -70,11 +70,13 @@ function($scope, $rootScope, $routeParams, Luke, CoreSystem, Update, Replication
   $scope.toggleHealthcheck = function() {
     if ($scope.healthcheckStatus) {
       Ping.disable(
+        {core: $routeParams.core},
         function(data) {$scope.healthcheckStatus = false},
         function(error) {$scope.healthcheckMessage = error}
       );
     } else {
       Ping.enable(
+        {core: $routeParams.core},
         function(data) {$scope.healthcheckStatus = true},
         function(error) {$scope.healthcheckMessage = error}
       );

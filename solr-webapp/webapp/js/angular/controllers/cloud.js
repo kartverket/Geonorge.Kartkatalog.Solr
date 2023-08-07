@@ -107,10 +107,6 @@ function isNumeric(n) {
   return !isNaN(parseFloat(n)) && isFinite(n);
 }
 
-function coreNameToLabel(name) {
-  return name.replace(/(.*?)_shard((\d+_?)+)_replica_?[ntp]?(\d+)/, '\$1_s\$2r\$4');
-}
-
 var nodesSubController = function($scope, Collections, System, Metrics) {
   $scope.pageSize = 10;
   $scope.showNodes = true;
@@ -198,10 +194,13 @@ var nodesSubController = function($scope, Collections, System, Metrics) {
           for (var replicaName in replicas) {
             var core = replicas[replicaName];
             core.name = replicaName;
-            core.label = coreNameToLabel(core['core']);
+            core.replica = core['core'].replace(/.*_(replica_.*)$/, '\$1');
             core.collection = collection.name;
             core.shard = shard.name;
             core.shard_state = shard.state;
+            core.label = core['collection'] + "_"
+              + (core['shard'] + "_").replace(/shard(\d+)_/, 's\$1')
+              + core['replica'].replace(/replica_?[ntp]?(\d+)/, 'r\$1');
 
             var node_name = core['node_name'];
             var node = getOrCreateObj(node_name, nodes);
@@ -383,7 +382,7 @@ var nodesSubController = function($scope, Collections, System, Metrics) {
 
           nodes[node]['uptime'] = (s.system.uptime || "unknown").replace(/.*up (.*?,.*?),.*/, "$1");
           nodes[node]['loadAvg'] = Math.round(s.system.systemLoadAverage * 100) / 100;
-          nodes[node]['cpuPct'] = Math.ceil(s.system.processCpuLoad);
+          nodes[node]['cpuPct'] = Math.ceil(s.system.processCpuLoad * 100);
           nodes[node]['cpuPctStyle'] = styleForPct(Math.ceil(s.system.processCpuLoad));
           nodes[node]['maxFileDescriptorCount'] = s.system.maxFileDescriptorCount;
           nodes[node]['openFileDescriptorCount'] = s.system.openFileDescriptorCount;
@@ -421,53 +420,53 @@ var nodesSubController = function($scope, Collections, System, Metrics) {
               nodes[node]['reqp95_ms'] = Math.floor(r['p95_ms']);
               nodes[node]['reqp99_ms'] = Math.floor(r['p99_ms']);
 
+              // These are the cores we _expect_ to find on this node according to the CLUSTERSTATUS
               var cores = nodes[node]['cores'];
               var indexSizeTotal = 0;
               var docsTotal = 0;
               var graphData = [];
-              if (cores) {
-                for (coreId in cores) {
-                  var core = cores[coreId];
-                  var keyName = "solr.core." + core['core'].replace(/(.*?)_(shard(\d+_?)+)_(replica.*?)/, '\$1.\$2.\$4');
-                  var nodeMetric = m.metrics[keyName];
-                  var size = nodeMetric['INDEX.sizeInBytes'];
+              for (coreId in cores) {
+                var core = cores[coreId];
+                if (core['shard_state'] !== 'active' || core['state'] !== 'active') {
+                  // If core state is not active, display the real state, or if shard is inactive, display that
+                  var labelState = (core['state'] !== 'active') ? core['state'] : core['shard_state'];
+                  core['label'] += "_(" + labelState + ")";
+                }
+                var coreMetricName = "solr.core." + core['collection'] + "." + core['shard'] + "." + core['replica'];
+                var coreMetric = m.metrics[coreMetricName];
+                // we may not actually get metrics back for every expected core (the core may be down)
+                if (coreMetric) {
+                  var size = coreMetric['INDEX.sizeInBytes'];
                   size = (typeof size !== 'undefined') ? size : 0;
                   core['sizeInBytes'] = size;
                   core['size'] = bytesToSize(size);
-                  if (core['shard_state'] !== 'active' || core['state'] !== 'active') {
-                    // If core state is not active, display the real state, or if shard is inactive, display that
-                    var labelState = (core['state'] !== 'active') ? core['state'] : core['shard_state'];
-                    core['label'] += "_(" + labelState + ")";
-                  }
                   indexSizeTotal += size;
-                  var numDocs = nodeMetric['SEARCHER.searcher.numDocs'];
+                  var numDocs = coreMetric['SEARCHER.searcher.numDocs'];
                   numDocs = (typeof numDocs !== 'undefined') ? numDocs : 0;
                   core['numDocs'] = numDocs;
                   core['numDocsHuman'] = numDocsHuman(numDocs);
                   core['avgSizePerDoc'] = bytesToSize(numDocs === 0 ? 0 : size / numDocs);
-                  var deletedDocs = nodeMetric['SEARCHER.searcher.deletedDocs'];
+                  var deletedDocs = coreMetric['SEARCHER.searcher.deletedDocs'];
                   deletedDocs = (typeof deletedDocs !== 'undefined') ? deletedDocs : 0;
                   core['deletedDocs'] = deletedDocs;
                   core['deletedDocsHuman'] = numDocsHuman(deletedDocs);
-                  var warmupTime = nodeMetric['SEARCHER.searcher.warmupTime'];
+                  var warmupTime = coreMetric['SEARCHER.searcher.warmupTime'];
                   warmupTime = (typeof warmupTime !== 'undefined') ? warmupTime : 0;
                   core['warmupTime'] = warmupTime;
                   docsTotal += core['numDocs'];
                 }
-                for (coreId in cores) {
-                  core = cores[coreId];
-                  var graphObj = {};
-                  graphObj['label'] = core['label'];
-                  graphObj['size'] = core['sizeInBytes'];
-                  graphObj['sizeHuman'] = core['size'];
-                  graphObj['pct'] = (core['sizeInBytes'] / indexSizeTotal) * 100;
-                  graphData.push(graphObj);
-                }
+
+                var graphObj = {};
+                graphObj['label'] = core['label'];
+                graphObj['size'] = core['sizeInBytes'];
+                graphObj['sizeHuman'] = core['size'];
+                graphObj['pct'] = (core['sizeInBytes'] / indexSizeTotal) * 100;
+                graphData.push(graphObj);
+              }
+              if (cores) {
                 cores.sort(function (a, b) {
                   return b.sizeInBytes - a.sizeInBytes
                 });
-              } else {
-                cores = {};
               }
               graphData.sort(function (a, b) {
                 return b.size - a.size
@@ -560,17 +559,23 @@ var treeSubController = function($scope, Zookeeper) {
 
     $scope.showTreeLink = function(link) {
         var path = decodeURIComponent(link.replace(/.*[\\?&]path=([^&#]*).*/, "$1"));
-        Zookeeper.detail({path: path}, function(data) {
-            $scope.znode = data.znode;
-            if (data.znode.path.endsWith("/managed-schema") || data.znode.path.endsWith(".xml.bak")) {
-              $scope.lang = "xml";
-            } else {
-              var lastPathElement = data.znode.path.split( '/' ).pop();
-              var lastDotAt = lastPathElement ? lastPathElement.lastIndexOf('.') : -1;
-              $scope.lang = lastDotAt != -1 ? lastPathElement.substring(lastDotAt+1) : "txt";
-            }
-            $scope.showData = true;
-        });
+        if (path === '/security.json' && !$scope.isPermitted(permissions.SECURITY_READ_PERM)) {
+          // TODO: Set proper data here to display a warning in right panel "You lack the required role to see this file"
+          $scope.znode = {};
+          $scope.showData = false;
+        } else {
+          Zookeeper.detail({path: path}, function(data) {
+              $scope.znode = data.znode;
+              if (data.znode.path.endsWith("/managed-schema") || data.znode.path.endsWith(".xml.bak")) {
+                $scope.lang = "xml";
+              } else {
+                var lastPathElement = data.znode.path.split( '/' ).pop();
+                var lastDotAt = lastPathElement ? lastPathElement.lastIndexOf('.') : -1;
+                $scope.lang = lastDotAt != -1 ? lastPathElement.substring(lastDotAt+1) : "txt";
+              }
+              $scope.showData = true;
+          });
+        }
     };
 
     $scope.hideData = function() {
@@ -751,8 +756,6 @@ var graphSubController = function ($scope, Zookeeper) {
                                 pullReplicas: state[c].pullReplicas,
                                 replicationFactor: state[c].replicationFactor,
                                 router: state[c].router.name,
-                                maxShardsPerNode: state[c].maxShardsPerNode,
-                                autoAddReplicas: state[c].autoAddReplicas,
                                 nrtReplicas: state[c].nrtReplicas,
                                 tlogReplicas: state[c].tlogReplicas,
                                 numShards: shards.length
@@ -870,9 +873,7 @@ solrAdminApp.directive('graph', function(Constants) {
                 if (d.data.type == 'collection') {
                   tooltip = d.name + " {<br/> ";
                   tooltip += "numShards: [" + d.data.numShards + "],<br/>";
-                  tooltip += "maxShardsPerNode: [" + d.data.maxShardsPerNode + "],<br/>";
                   tooltip += "router: [" + d.data.router + "],<br/>";
-                  tooltip += "autoAddReplicas: [" + d.data.autoAddReplicas + "],<br/>";
                   tooltip += "replicationFactor: [" + d.data.replicationFactor + "],<br/>";
                   tooltip += "nrtReplicas: [" + d.data.nrtReplicas + "],<br/>";
                   tooltip += "pullReplicas: [" + d.data.pullReplicas + "],<br/>";

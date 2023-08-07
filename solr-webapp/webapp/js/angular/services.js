@@ -43,6 +43,11 @@ solrAdminServices.factory('System',
     "reload": {method: "GET", params:{action:"RELOAD", core: "@core"}}
     });
   }])
+.factory('ConfigSets',
+ ['$resource', function ($resource) {
+    return $resource('admin/configs', {'wt': 'json', '_': Date.now()}, {"configs": {params: {action: "LIST"}}
+    });
+ }])
 .factory('Cores',
   ['$resource', function($resource) {
     return $resource('admin/cores',
@@ -61,7 +66,7 @@ solrAdminServices.factory('System',
     return $resource('admin/info/logging', {'wt':'json', '_':Date.now()}, {
       "events": {params: {since:'0'}},
       "levels": {},
-      "setLevel": {}
+      "setLevel": {params: {nodes:'all'}}
       });
   }])
 .factory('Zookeeper',
@@ -121,6 +126,13 @@ solrAdminServices.factory('System',
       "postCsv": {headers: {'Content-type': 'application/csv'}, method: "POST", params: {handler: '@handler'}}
     });
   }])
+.factory('ParamSet',
+  ['$resource', function($resource) {
+    return $resource(':core/config/params/:name', {core: '@core', wt:'json', _:Date.now()}, {
+      "submit": {headers: {'Content-type': 'application/json'}, method: "POST"},
+      "get": {headers: {'Content-type': 'application/json'}, method: "GET"}
+    });
+  }])
 .service('FileUpload', function ($http) {
     this.upload = function(params, file, success, error){
         var url = "" + params.core + "/" + params.handler + "?";
@@ -173,25 +185,12 @@ solrAdminServices.factory('System',
       "field": {params: {"analysis.showmatch": true}}
     });
   }])
-.factory('DataImport',
-  ['$resource', function($resource) {
-    return $resource(':core/:name', {core: '@core', name: '@name', indent:'on', wt:'json', _:Date.now()}, {
-      "config": {params: {command: "show-config"}, headers: {doNotIntercept: "true"},
-                 transformResponse: function(data) {
-                    return {config: data};
-                 }
-                },
-      "status": {params: {command: "status"}, headers: {doNotIntercept: "true"}},
-      "reload": {params: {command: "reload-config"}},
-      "post": {method: "POST",
-                headers: {'Content-type': 'application/x-www-form-urlencoded'},
-                transformRequest: function(data) { return $.param(data) }}
-    });
-  }])
 .factory('Ping',
   ['$resource', function($resource) {
     return $resource(':core/admin/ping', {wt:'json', core: '@core', ts:Date.now(), _:Date.now()}, {
      "ping": {},
+     "enable": {params:{action:"enable"}, headers: {doNotIntercept: "true"}},
+     "disable": {params:{action:"disable"}, headers: {doNotIntercept: "true"}},
      "status": {params:{action:"status"}, headers: {doNotIntercept: "true"}
     }});
   }])
