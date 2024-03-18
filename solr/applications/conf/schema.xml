@@ -134,6 +134,7 @@
   <field name="abstract" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="purpose" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="type" type="string" indexed="true" stored="true" multiValued="false"/>
+  <field name="metadata_standard" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="theme" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="place" type="string" indexed="true" stored="true" multiValued="true"/>
   <field name="placegroups" type="string" indexed="true" stored="true" multiValued="true"/>
