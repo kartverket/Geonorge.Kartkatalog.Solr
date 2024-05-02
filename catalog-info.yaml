@@ -1,0 +1,38 @@
+# nonk8s
+apiVersion: "backstage.io/v1alpha1"
+kind: "Component"
+metadata:
+  name: "Geonorge.Kartkatalog.Solr"
+  tags:
+  - "internal"
+spec:
+  type: "service"
+  lifecycle: "production"
+  owner: "datadeling_og_distribusjon"
+  system: "geonorge"
+---
+apiVersion: "backstage.io/v1alpha1"
+kind: "Group"
+metadata:
+  name: "security_champion_Geonorge.Kartkatalog.Solr"
+  title: "Security Champion Geonorge.Kartkatalog.Solr"
+spec:
+  type: "security_champion"
+  parent: "land_security_champions"
+  members:
+  - "dagolav"
+  children:
+  - "resource:Geonorge.Kartkatalog.Solr"
+---
+apiVersion: "backstage.io/v1alpha1"
+kind: "Resource"
+metadata:
+  name: "Geonorge.Kartkatalog.Solr"
+  links:
+  - url: "https://github.com/kartverket/Geonorge.Kartkatalog.Solr"
+    title: "Geonorge.Kartkatalog.Solr på GitHub"
+spec:
+  type: "repo"
+  owner: "security_champion_Geonorge.Kartkatalog.Solr"
+  dependencyOf:
+  - "component:Geonorge.Kartkatalog.Solr"
