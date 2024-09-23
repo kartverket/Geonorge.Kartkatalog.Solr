@@ -203,6 +203,10 @@
 
   <fieldType name="popularMetadataFile" keyField="uuid" defVal="0" stored="false" indexed="false" class="solr.ExternalFileField"/>
   <field name="popularMetadata" type="popularMetadataFile" indexed="true" stored="true" />
+  
+    <!-- vector-based field -->
+  <fieldType name="knn_vector" class="solr.DenseVectorField" vectorDimension="1536" omitNorms="true"/>
+  <field name="vector" type="knn_vector" indexed="true" stored="true" multiValued="false"/>
 
   <copyField source="uuid" dest="allText"/>
   <copyField source="title" dest="allText"/>
