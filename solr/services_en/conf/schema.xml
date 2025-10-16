@@ -142,6 +142,7 @@
   <field name="nationalinitiative" type="string" indexed="true" stored="true" multiValued="true"/>
   <field name="organizationgroup" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="organization" type="string" indexed="true" stored="true" multiValued="false"/>
+  <field name="organizations" type="string" indexed="true" stored="true" multiValued="true"/>
   <field name="organization2" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="organization3" type="string" indexed="true" stored="true" multiValued="false"/>
 

@@ -522,7 +522,7 @@
            autowarmCount - the number of entries to prepopulate from
                and old cache.  
       -->
-    <filterCache class="solr.FastLRUCache"
+    <filterCache class="solr.LRUCache"
                  size="512"
                  initialSize="512"
                  autowarmCount="0"/>
@@ -1209,6 +1209,20 @@
     <lst name="defaults">
      <str name="echoParams">explicit</str> 
      <str name="echoHandler">true</str>
+    </lst>
+  </requestHandler>
+
+  <!-- Helper handler to get documents for bulk update of organizations field -->
+  <requestHandler name="/admin/get-org-docs" class="solr.SearchHandler">
+    <lst name="defaults">
+      <str name="q">organization:[* TO *]</str>
+      <str name="fl">id,organization</str>
+      <str name="rows">10000</str>
+      <str name="wt">json</str>
+      <str name="indent">true</str>
+    </lst>
+    <lst name="appends">
+      <str name="fq">organization:[* TO *]</str>
     </lst>
   </requestHandler>
   
