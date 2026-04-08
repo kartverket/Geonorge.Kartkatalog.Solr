@@ -1,0 +1,8 @@
+.codex
+.git
+.github
+.security
+README.md
+catalog-info.yaml
+docker-compose.yml
+solr/**/data

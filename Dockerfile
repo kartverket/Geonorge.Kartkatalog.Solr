@@ -1,19 +1,26 @@
-FROM eclipse-temurin:23.0.2_7-jdk-alpine
+FROM solr:9.4.1 AS solr-modules
 
-RUN mkdir -p /solr/server/logs
+FROM solr:9.4.1-slim
 
-WORKDIR /solr/server
+USER root
 
-COPY contexts/ /solr/server/contexts
-COPY etc/ /solr/server/etc
-COPY lib/ /solr/server/lib
-COPY modules/ /solr/server/modules
-COPY resources/ /solr/server/resources
-COPY scripts/ /solr/server/scripts
-COPY solr/ /solr/server/solr
-COPY solr-webapp/ /solr/server/solr-webapp
-COPY start.jar /solr/server/start.jar
+ENV SOLR_HOME=/var/solr/data
+
+COPY --from=solr-modules --chown=0:0 /opt/solr/modules/extraction /opt/solr/modules/extraction
+COPY --from=solr-modules --chown=0:0 /opt/solr/modules/clustering /opt/solr/modules/clustering
+COPY --from=solr-modules --chown=0:0 /opt/solr/modules/langid /opt/solr/modules/langid
+
+COPY --chown=0:0 docker/init-solr-home.sh /docker-entrypoint-initdb.d/10-init-solr-home.sh
+COPY --chown=0:0 solr/ /opt/geonorge/solr-home/
+COPY --chown=0:0 docker/seed-data/ /opt/geonorge/seed-data/
+
+RUN mkdir -p /var/solr/data /var/solr/logs \
+    && chown -R 150:150 /var/solr \
+    && chmod 775 /var/solr \
+    && chmod 755 /docker-entrypoint-initdb.d/10-init-solr-home.sh
+
+USER 150:150
 
 EXPOSE 8983
 
-CMD [ "java", "-DSTOP.KEY=solrrocks", "-DSTOP.PORT=7983", "-DdisableAdminUI=false", "-Dhost=localhost", "-Djava.io.tmpdir=/tmp", "-Djava.security.manager", "-Djava.security.policy=/solr/server/etc/security.policy", "-Djava.security.properties=/solr/server/etc/security.properties", "-Djava.util.logging.manager=org.apache.logging.log4j.jul.LogManager", "-Djetty.home=/solr/server", "-Djetty.port=8983", "-Dlog4j.configurationFile=/solr/server/resources/log4j2.xml", "-Dsolr.default.confdir=/solr/server/solr/configsets/_default/conf", "-Dsolr.install.dir=/solr", "-Dsolr.install.symDir=/solr", "-Dsolr.internal.network.permission=*", "-Dsolr.jetty.host=0.0.0.0", "-Dsolr.jetty.inetaccess.excludes=", "-Dsolr.jetty.inetaccess.includes=", "-Dsolr.log.dir=/solr/server/logs", "-Dsolr.solr.home=/solr/server/solr", "-Duser.timezone=UTC", "-XX:+AlwaysPreTouch", "-XX:+CrashOnOutOfMemoryError", "-XX:+ExplicitGCInvokesConcurrent", "-XX:+ParallelRefProcEnabled", "-XX:+PerfDisableSharedMem", "-XX:+UseG1GC", "-XX:+UseLargePages", "-XX:-OmitStackTraceInFastThrow", "-XX:ErrorFile=/solr/server/logs/jvm_crash_%p.log", "-XX:MaxGCPauseMillis=250", "-Xlog:gc*:file=/solr/server/logs/solr_gc.log:time,uptime:filecount=9,filesize=20M", "-Xms512m", "-Xmx512m", "-Xss256k", "-jar", "start.jar", "--module=http"]
+CMD ["solr-foreground"]
