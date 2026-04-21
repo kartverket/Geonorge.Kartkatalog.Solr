@@ -1,4 +1,0 @@
-grant {
-  // Allow file-based ADC mounted through the Kubernetes projected token volume.
-  permission java.io.FilePermission "/var/run/secrets/tokens/gcp-ksa/-", "read";
-};
