@@ -72,5 +72,11 @@
     <!--reporter name="jmx_metrics" group="core" class="org.apache.solr.metrics.reporters.SolrJmxReporter"/-->
   </metrics>
 
+  <backup>
+    <repository name="gcs_backup" class="org.apache.solr.gcs.GCSBackupRepository">
+      <str name="gcsBucket">${solr.gcs.bucket}</str>
+      <str name="location">solr-backups</str>
+    </repository>
+  </backup>
 
 </solr>

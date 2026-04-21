@@ -9,6 +9,7 @@ ENV SOLR_HOME=/var/solr/data
 COPY --from=solr-modules --chown=0:0 /opt/solr/modules/extraction /opt/solr/modules/extraction
 COPY --from=solr-modules --chown=0:0 /opt/solr/modules/clustering /opt/solr/modules/clustering
 COPY --from=solr-modules --chown=0:0 /opt/solr/modules/langid /opt/solr/modules/langid
+COPY --from=solr-modules --chown=0:0 /opt/solr/modules/gcs-repository /opt/solr/modules/gcs-repository
 
 COPY --chown=0:0 docker/init-solr-home.sh /docker-entrypoint-initdb.d/10-init-solr-home.sh
 COPY --chown=0:0 solr/ /opt/geonorge/solr-home/
