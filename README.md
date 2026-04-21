@@ -40,6 +40,8 @@ runtime `data/` directory by the bootstrap script.
   required Solr modules from `9.4.1`
 - `docker/init-solr-home.sh`: copies core configuration into the writable
   Solr home during container startup
+- `docker/solr-security.policy`: grants Solr read access to the mounted
+  Google ADC token file used for GCS backups
 - `docker-compose.yml`: local/dev smoke-test shape for the container runtime
 - `solr/`: Solr home, including `solr.xml`, core directories, and configsets
 
