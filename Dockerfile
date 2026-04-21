@@ -20,6 +20,7 @@ grant {\n\
   // Allow file-based ADC mounted through the Kubernetes projected token volume.\n\
   permission java.io.FilePermission "/var/run/secrets/tokens/gcp-ksa/google-application-credentials.json", "read";\n\
   permission java.io.FilePermission "/var/run/secrets/tokens/gcp-ksa/-", "read";\n\
+  permission java.io.FilePermission "/app/gcloud/-", "read";\n\
 };\n' >> /opt/solr/server/etc/security.policy \
     && mkdir -p /var/solr/data /var/solr/logs \
     && chown -R 150:150 /var/solr \
