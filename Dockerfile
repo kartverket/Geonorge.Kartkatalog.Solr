@@ -5,7 +5,7 @@ FROM solr:9.4.1-slim
 USER root
 
 ENV SOLR_HOME=/var/solr/data
-ENV SOLR_OPTS="-Djava.security.policy=/opt/geonorge/solr-security.policy"
+ENV JAVA_TOOL_OPTIONS="-Djava.security.policy=/opt/geonorge/solr-security.policy"
 
 COPY --from=solr-modules --chown=0:0 /opt/solr/modules/extraction /opt/solr/modules/extraction
 COPY --from=solr-modules --chown=0:0 /opt/solr/modules/clustering /opt/solr/modules/clustering
