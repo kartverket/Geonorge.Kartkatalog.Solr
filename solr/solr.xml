@@ -74,7 +74,6 @@
 
   <backup>
     <repository name="gcs_backup" class="org.apache.solr.gcs.GCSBackupRepository">
-      <str name="gcsBucket">${solr.gcs.bucket}</str>
       <str name="location">solr-backups</str>
     </repository>
   </backup>
