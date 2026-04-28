@@ -5,13 +5,19 @@ services:
       dockerfile: Dockerfile
     user: "150:150"
     read_only: true
+    # expected in .env: GCS_BUCKET="<bucket-name>"
+    env_file:    
+      - .env
     environment:
       SOLR_HOME: /var/solr/data
       SOLR_JAVA_MEM: -Xms512m -Xmx512m
+      GCS_CREDENTIAL_PATH: /var/run/secrets/tokens/gcp-ksa/google-application-credentials.json      
+      SOLR_MODULES: gcs-repository
     ports:
       - "8983:8983"
     volumes:
       - solr-var:/var/solr
+      - ~/.config/gcloud/application_default_credentials.json:/var/run/secrets/tokens/gcp-ksa/google-application-credentials.json:ro
     tmpfs:
       - /tmp:size=256m,uid=150,gid=150,mode=1777
 
