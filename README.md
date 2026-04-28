@@ -38,8 +38,6 @@ runtime `data/` directory by the bootstrap script.
 
 - `Dockerfile`: builds the pinned `9.4.1-slim` runtime image and copies the
   required Solr modules from `9.4.1`
-- `Dockerfile.backup`: builds a minimal Alpine/curl image that can run the
-  backup script mounted from a Kubernetes ConfigMap
 - `docker/init-solr-home.sh`: copies core configuration into the writable
   Solr home during container startup
 - `docker-compose.yml`: local/dev for the container runtime
@@ -66,9 +64,11 @@ The scripts default to the dev Solr endpoint and the `gcs_backup` repository.
 Override `SOLR_URL`, `REPOSITORY`, or `LOCATION_PREFIX` with environment
 variables if needed.
 
-```bash
-docker build -f Dockerfile.backup -t geonorge-solr-backup:local .
+The backup and restore scripts are POSIX `sh` compatible and keep their core
+list inside the scripts, so they can be mounted as Kubernetes ConfigMaps and
+run with the official curl image:
 
+```bash
 kubectl create configmap solr-backup-scripts \
   --from-file=backup-all-cores.sh=scripts/backup-all-cores.sh \
   --from-file=restore-all-cores.sh=scripts/restore-all-cores.sh
@@ -79,7 +79,8 @@ Example CronJob container shape:
 ```yaml
 containers:
   - name: backup
-    image: geonorge-solr-backup:local
+    image: curlimages/curl:8.19.0
+    command: ["sh", "/scripts/backup-all-cores.sh"]
     env:
       - name: SOLR_URL
         value: http://localhost:8983/solr

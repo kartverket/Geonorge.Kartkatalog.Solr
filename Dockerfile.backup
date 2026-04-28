@@ -1,8 +1,0 @@
-FROM alpine:3.20
-
-RUN apk add --no-cache ca-certificates curl
-
-USER 65532:65532
-WORKDIR /work
-
-ENTRYPOINT ["sh", "/scripts/backup-all-cores.sh"]
