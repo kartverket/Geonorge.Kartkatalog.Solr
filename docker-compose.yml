@@ -13,6 +13,7 @@ services:
       SOLR_JAVA_MEM: -Xms512m -Xmx512m
       GCS_CREDENTIAL_PATH: /var/run/secrets/tokens/gcp-ksa/google-application-credentials.json      
       SOLR_MODULES: gcs-repository
+      SOLR_OPTS: "-Dsolr.jetty.request.header.size=65536"
     ports:
       - "8983:8983"
     volumes:

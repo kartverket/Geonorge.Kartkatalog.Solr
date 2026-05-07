@@ -62,17 +62,15 @@ SOLR_URL=http://localhost:8983/solr ./scripts/restore-all-cores.sh 2026042310300
 
 The scripts default to the dev Solr endpoint and the `gcs_backup` repository.
 Override `SOLR_URL`, `REPOSITORY`, or `LOCATION_PREFIX` with environment
-variables if needed.
+variables if needed. Currently, only `SOLR_URL` is needed for restore. 
 
-The backup and restore scripts are POSIX `sh` compatible and keep their core
-list inside the scripts, so they can be mounted as Kubernetes ConfigMaps and
-run with the official curl image:
+### Restore checklist:
 
-```bash
-kubectl create configmap solr-backup-scripts \
-  --from-file=backup-all-cores.sh=scripts/backup-all-cores.sh \
-  --from-file=restore-all-cores.sh=scripts/restore-all-cores.sh
-```
+- go to [google cloud](https://console.cloud.google.com/) and the respective project
+- navigate to storage and bucket
+- find the wanted backup snapshot to restore from and copy the datetime part (number only)
+- `SOLR_URL=https://<my-solr-host>/solr ./scripts/restore-all-cores.sh <my-snapshot-number>`
+
 
 Example CronJob container shape:
 
