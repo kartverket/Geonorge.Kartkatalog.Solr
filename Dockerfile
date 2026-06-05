@@ -1,6 +1,6 @@
-FROM solr:9.4.1 AS solr-modules
+FROM solr:10.0.0 AS solr-modules
 
-FROM solr:9.4.1-slim
+FROM solr:10.0.0-slim
 
 USER root
 
@@ -35,4 +35,4 @@ USER 150:150
 
 EXPOSE 8983
 
-CMD ["solr-foreground"]
+CMD ["solr-foreground", "--user-managed"]
