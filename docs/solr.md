@@ -15,10 +15,9 @@ Kartkatalogen eksponerer API-metoder for å kjøre indeksering av Solr. Indekser
 
 | URL | Beskrivelse | Eksempel |
 | --- | --- | --- |
-| /index/IndexSingle/{uuid} | Indekserer en metadata XML-fil. | http://kartkatalog.dev.geonorge.no/index/IndexSingle/041f1e6e-bdbc-4091-b48f-8a5990f3cc5b |
-| /index/Index | Indekserer alle metadata som finnes i GeoNetwork. | http://kartkatalog.dev.geonorge.no/index/Index |
-| /index/ReIndex | Reindekserer alle metadata som finnes i GeoNetwork. Til forskjell fra Index så slettes hele indeksen før ny indeksering starter. | http://kartkatalog.dev.geonorge.no/index/ReIndex |
-| /index/MetadataUpdated | Indekserer en metadata XML-fil (samme som IndexSingle) på forespørsel fra GeoNetwork. Dette kallet er implementert slik at Kartkatalogen kan håndtere oppdateringsforespørsel fra GeoNetwork. | http://kartkatalog.dev.geonorge.no/index/MetadataUpdated |
+| /api/metadataupdated | Indekserer en metadata XML-fil. | http://kartkatalog.dev.geonorge.no/api/metadataupdated |
+| /api/index-metadata | Indekserer alle metadata som finnes i GeoNetwork. | http://kartkatalog.dev.geonorge.no/api/index-metadata |
+| /api/reindex-metadata | Reindekserer alle metadata som finnes i GeoNetwork. Til forskjell fra Index så slettes hele indeksen før ny indeksering starter. | http://kartkatalog.dev.geonorge.no/api/reindex-metadata |
 
 
  
@@ -39,35 +38,66 @@ Mange av feltene kopieres til 3 samlefelter: allText, allText2, allText3. Se lis
 #### Beskrivelse av søkeoperasjonen
 Søk justeres eng gang i blant, se metoden BuildQuery i filen: https://github.com/kartverket/Geonorge.Kartkatalog/blob/master/Kartverket.Metadatakatalog/Models/SearchParameters.cs
 
-Spesialtegn fjernes fra søketeksten: : ! } { ) ( ] [ ^ 
+Spesialtegn fjernes fra søketeksten: : '+', '-', '&', '|', '!', '(', ')', '{', '}', '[', ']', '^', '"', '~', '*', '?', ':', '\\', '/'
 
-##### Boost-regler (søketekst kortere enn 5 tegn)
+##### Boost-regler
 
-| boost | forklaring |
-| --- | --- |
-| titleText:SØKETEKST^50 | Treff i titteltekst gir boost på 50 |
-| titleText:SØKETEKST*^40 | Treff på ord i titteltekst som starter med søkestrengen gir boost på 40 |
-| allText:SØKETEKST^1.2 | Treff i allText gir boost på 1.2 |
-| allText:SØKETEKST*^1.1 | Treff på ord i allText som starter med søkestrengen gir boost på 1.1 |
+## 1. Leksikalsk boost-stige (hovedspørringen)
 
+Klausulene er ordnet etter *spesifisitet* — mest presise treff får høyest boost. Merk mønsteret `(type:dataset AND …)^N  …^(N-1)`: **datasett får alltid +1 over andre typer** (tjenester, WMS/WFS osv.).
 
- 
+| Boost | Klausul | Betyr |
+|------:|---------|-------|
+| `^81` | `uuid:<tekst>` | Eksakt UUID-treff — vinner alt |
+| `^79 / ^78` | `titleText:<tekst>` | Eksakt tittel (hele frasen, ingen wildcard) |
+| `^77 / ^76` | `titleText:<tekst>*` | Tittel starter med søket (prefiks) |
+| `^75 / ^74` | `title_lowercase:*<tekst>*` (+ prefiks) | Tittel inneholder søket (case-uavhengig) |                                                                                                                                         | `^73 / ^72` | `titleText:*<tekst>*` | Tittel inneholder søket (substring) |
+| `^71 / ^70` | `allText:*<tekst>*` | Fulltekst inneholder søket (substring) |
+| `^0.5 / ^0.4` | per ord: `titleText:*ord*` | Ved flerordssøk: hvert ord for seg i tittel |                                                                                                                                                 | `^1` | `allText:<tekst>~1` | Fuzzy fulltekst (redigeringsavstand 1) |                                                                                                                                                                      | `(1)` | `allText2:<tekst>` | Sekundært tekstfelt (stammet/`kirk`-aktig), ingen eksplisitt boost |
 
-##### Boost-regler (søketekst lengre enn 5 tegn)
+Et søk uten mellomrom (f.eks. «kirker») treffer toppklausulene; et flerordssøk («løs jord») gjør `titleText`/`allText` om til `løs*jord`-wildcards, som ofte ikke matcher → da faller den leksikalske scoren lavt og vektoren overtar.     
+## 2. Type-boost (multiplikativ)
 
-| boost | forklaring |
-| --- | --- |
-| titleText:SØKETEKST^50 | Treff i titteltekst gir boost på 50 |
-| titleText:SØKETEKST*^40 | Treff på ord i titteltekst som starter med søkestrengen gir boost på 40 |
-| titleText:SØKETEKST~2^1.1 | Fuzzysøk med 2 bokstaver feil i titleText |
-| allText:SØKETEKST^1.2 | Treff i allText gir boost på 1.2 |
-| allText:SØKETEKST*^1.1 | Treff på ord i allText som starter med søkestrengen gir boost på 1.1 |
-| allText:SØKETEKST~1 | Fuzzysøk med 1 bokstav feil i allText |
-| allText2:SØKETEKST | Treff på ord i allText2 gir boost på 1 |
+```
+!boost b=typenumber
+```
 
+Ganger scoren med et felt som rangerer dokumenttyper — finjusterer rekkefølgen mellom typer på tvers av alle klausulene.
 
- 
+## 3. Filterklausuler (ikke boost — fjerner treff)
 
+```
+!serie:*series_historic*     ekskluderer historiske serier
+!serie:*series_time*         ekskluderer tidsserier
+```
+
+(droppes hvis `listhidden`).
+
+## 4. Vektor-laget (semantikk)
+
+**a) Hybrid-filter** — avgjør hva som *kommer med*:
+
+```
+allText:*<tekst>*  OR  {!frange l=0.78}query($knn_q)
+```
+
+Et dokument beholdes hvis det enten inneholder søket som **substring** (venstre side) **eller** har **cosinus ≥ 0.56** mot embeddingen (`l=0.78`). Dette er nøkkelen: leksikalske treff overlever uansett, så terskelen rammer bare rene
+vektor-treff.
+
+**b) ReRank** — avgjør *rekkefølgen*:
+
+```
+{!rerank reRankQuery=$knn_q reRankDocs=200 reRankWeight=20}
+```
+
+`sluttscore = leksikalsk_score + 20 × cosinus-score`, brukt på de øverste 200.
+
+## Den viktigste innsikten
+
+Boostingen er **selvbalanserende**:
+
+- **Sterkt leksikalsk treff** (ettordssøk som «kirker» → `^70`+) → leksikalsk score dominerer.
+- **Svakt leksikalsk treff** (flerordssøk som «løs jord», ingen sammenhengende wildcard-match) → leksikalsk score er liten (~0.4–0.9), og vektoren styrer rangeringen → «løsmasser» havner øverst.
 
 
 #### Felter i søkeindeksen (utdrag fra schema.xml)
@@ -86,6 +116,7 @@ Spesialtegn fjernes fra søketeksten: : ! } { ) ( ] [ ^
 | nationalinitiative | string | true | true |  | true | |
 | organizationgroup | string | true | true |  | false | |
 | organization | string | true | true |  | false | |
+| organizations | string | true | true |  | true | |
 | organization2 | string | true | true |  | false | |
 | organization3 | string | true | true |  | false | |
 | organizationContactname | string | false | true |  | false | (fixed typo: stored="true") |
@@ -132,11 +163,12 @@ Spesialtegn fjernes fra søketeksten: : ! } { ) ( ] [ ^
 | Name | keyField | defVal | Stored | Indexed | Class | valType |
 | --- | --- | --- | --- | --- | --- | --- |
 | popularMetadataFile | uuid | 0 | true | true | solr.ExternalFileField | float |
+| knn_vector |  |  | true | true | solr.DenseVectorField | float array |
 
 | Name | Type | Indexed | Stored | Required | MultiValued | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
 | popularMetadata | popularMetadataFile | true | true |  |  | |
-
+| vector | knn_vector | true | true |  |  | |
 
 #### Felter som kopieres til samlefelter (copyField) 
 
@@ -199,7 +231,7 @@ Spesialtegn fjernes fra søketeksten: : ! } { ) ( ] [ ^
 
 #### API-dokumentasjon
 
-API-et er dokumentert på https://kartkatalog.geonorge.no/help
+API-et er dokumentert på https://kartkatalog.geonorge.no/swagger
 
 #### Eksempelkall
 
