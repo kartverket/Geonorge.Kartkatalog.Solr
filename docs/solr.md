@@ -1,4 +1,7 @@
-Følgende side er kopiert fra confluence 16.06.2026. Den var sist endret i confluence i 2023. 
+### Dokumentkilde og status
+
+Følgende side er kopiert fra confluence 16.06.2026. Den var sist endret i confluence i 2023.
+
 Beskrivelser av felter ble gjort om til tabell for readability.
 
 ## Indeksering
@@ -20,7 +23,7 @@ Kartkatalogen eksponerer API-metoder for å kjøre indeksering av Solr. Indekser
 
  
 
-Beskrivelse av indekseringsoperasjonen
+#### Beskrivelse av indekseringsoperasjonen
 Indekseringsmotoren i Kartkatalogen fungerer på følgende måte:
 
 Ved hjelp av GeonorgeAPI kjøres det et tomt CSW-søk mot GeoNetwork.
@@ -33,12 +36,12 @@ Mange av feltene kopieres til 3 samlefelter: allText, allText2, allText3. Se lis
 
  
 
-Beskrivelse av søkeoperasjonen
+#### Beskrivelse av søkeoperasjonen
 Søk justeres eng gang i blant, se metoden BuildQuery i filen: https://github.com/kartverket/Geonorge.Kartkatalog/blob/master/Kartverket.Metadatakatalog/Models/SearchParameters.cs
 
 Spesialtegn fjernes fra søketeksten: : ! } { ) ( ] [ ^ 
 
-For søketekst kortere enn 5 tegn:
+##### Boost-regler (søketekst kortere enn 5 tegn)
 
 | boost | forklaring |
 | --- | --- |
@@ -50,7 +53,7 @@ For søketekst kortere enn 5 tegn:
 
  
 
-For søketekst lengre enn 5 tegn:
+##### Boost-regler (søketekst lengre enn 5 tegn)
 
 | boost | forklaring |
 | --- | --- |
@@ -67,7 +70,7 @@ For søketekst lengre enn 5 tegn:
 
 
 
-Hvilke felter som finnes i søkeindeksen. Utdrag fra schema.xml (solr).
+#### Felter i søkeindeksen (utdrag fra schema.xml)
 
 | Name | Type | Indexed | Stored | Required | MultiValued | Notes |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -124,7 +127,7 @@ Hvilke felter som finnes i søkeindeksen. Utdrag fra schema.xml (solr).
 | otherconstraintsaccess | string | false | true |  | false | |
 
 
-Field types (utdrag)
+##### Field types (utdrag)
 
 | Name | keyField | defVal | Stored | Indexed | Class | valType |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -135,7 +138,7 @@ Field types (utdrag)
 | popularMetadata | popularMetadataFile | true | true |  |  | |
 
 
-Felter som kopieres til samlefelter. Utdrag fra schema.xml (solr)
+#### Felter som kopieres til samlefelter (copyField) 
 
 | Source | Destination |
 | --- | --- |
@@ -194,8 +197,10 @@ Felter som kopieres til samlefelter. Utdrag fra schema.xml (solr)
 | ServiceDistributionNameForDataset | allText3 |
 
 
+#### API-dokumentasjon
+
 API-et er dokumentert på https://kartkatalog.geonorge.no/help
 
-Eksempelkall:
+#### Eksempelkall
 
-https://kartkatalog.geonorge.no/api/search?text=berggrunn returnerer alle metadataoppføringer som inneholder teksten "berggrunn"
+`https://kartkatalog.geonorge.no/api/search?text=berggrunn` — returnerer alle metadataoppføringer som inneholder teksten "berggrunn"
