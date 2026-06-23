@@ -527,7 +527,7 @@
   <field name="popularMetadata" type="pint" indexed="true" stored="true" docValues="true" default="0"/>
   
   <!-- vector-based field -->
-  <fieldType name="knn_vector" class="solr.DenseVectorField" vectorDimension="768" omitNorms="true"/>
+  <fieldType name="knn_vector" class="solr.DenseVectorField" vectorDimension="768" similarityFunction="dot_product" omitNorms="true"/>
   <field name="vector" type="knn_vector" indexed="true" stored="true" multiValued="false"/>
 
   <copyField source="uuid" dest="allText"/>
