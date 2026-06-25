@@ -69,6 +69,7 @@
   <fieldType name="random" class="solr.RandomSortField" indexed="true"/>
   <fieldType name="rank" class="solr.RankField"/>
   <fieldType name="string" class="solr.StrField" sortMissingLast="true"/>
+  <fieldType name="collated_nb" class="solr.ICUCollationField" locale="nb" strength="primary" sortMissingLast="true"/>
   <fieldType name="strings" class="solr.StrField" sortMissingLast="true" multiValued="true"/>
   <fieldType name="text_ar" class="solr.TextField" positionIncrementGap="100">
     <analyzer>
@@ -453,7 +454,7 @@
   <field name="_version_" type="plong" indexed="false" stored="false"/>
   <field name="Id" type="string" indexed="true" stored="true" required="true" multiValued="false" />
   <field name="Type" type="string" indexed="true" stored="true" multiValued="false"/>
-  <field name="title" type="string" indexed="true" stored="true" multiValued="false"/>
+  <field name="title" type="collated_nb" indexed="true" stored="true" docValues="true" multiValued="false"/>
   <field name="LinkUrl" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="MainIntro" type="string" indexed="true" stored="true" multiValued="false"/>
   <field name="MainBody" type="string" indexed="true" stored="true" multiValued="false"/>
