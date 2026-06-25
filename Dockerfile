@@ -13,6 +13,7 @@ COPY --from=solr-modules --chown=0:0 /opt/solr/modules/extraction /opt/solr/modu
 COPY --from=solr-modules --chown=0:0 /opt/solr/modules/clustering /opt/solr/modules/clustering
 COPY --from=solr-modules --chown=0:0 /opt/solr/modules/langid /opt/solr/modules/langid
 COPY --from=solr-modules --chown=0:0 /opt/solr/modules/gcs-repository /opt/solr/modules/gcs-repository
+COPY --from=solr-modules --chown=0:0 /opt/solr/modules/analysis-extras /opt/solr/modules/analysis-extras
 
 COPY --chown=0:0 docker/init-solr-home.sh /docker-entrypoint-initdb.d/10-init-solr-home.sh
 COPY --chown=0:0 docker/log4j2-stdout.xml /opt/geonorge/log4j2-stdout.xml
