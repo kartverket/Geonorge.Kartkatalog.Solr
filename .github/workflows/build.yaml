@@ -3,12 +3,11 @@ name: ImageBuild
 on:
   push:
     branches:
-      - docker
-  workflow_dispatch:
+      - docker-solr10
 
 env:
   DOCKER_REGISTRY: ghcr.io
-  NAME: kartverket/geonorge-kartkatalog-solr
+  NAME: kartverket/geonorge-kartkatalog-solr10
 
 jobs:
   build_image:

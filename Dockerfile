@@ -18,7 +18,6 @@ COPY --from=solr-modules --chown=0:0 /opt/solr/modules/analysis-extras /opt/solr
 COPY --chown=0:0 docker/init-solr-home.sh /docker-entrypoint-initdb.d/10-init-solr-home.sh
 COPY --chown=0:0 docker/log4j2-stdout.xml /opt/geonorge/log4j2-stdout.xml
 COPY --chown=0:0 solr/ /opt/geonorge/solr-home/
-COPY --chown=0:0 docker/seed-data/ /opt/geonorge/seed-data/
 
 RUN printf '\n\
 grant {\n\
