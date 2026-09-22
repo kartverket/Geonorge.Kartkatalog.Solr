@@ -505,6 +505,7 @@
   <field name="ServiceDistributionNameForDataset" type="string" indexed="false" stored="true" multiValued="false"/>
   <field name="ServiceDistributionUuidForDataset" type="string" indexed="false" stored="true" multiValued="false"/>
   <field name="DistributionProtocols" type="string" indexed="true" stored="true" multiValued="true"/>
+  <field name="DistributionFormats" type="string" indexed="true" stored="true" multiValued="true"/>
   <field name="ServiceDistributionAccessConstraint" type="string" indexed="false" stored="true" multiValued="false"/>
   <field name="area" type="string" indexed="true" stored="true" multiValued="true"/>
   <field name="spatialscope" type="string" indexed="true" stored="true" multiValued="true"/>

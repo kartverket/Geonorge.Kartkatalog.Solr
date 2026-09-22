@@ -149,6 +149,7 @@ Boostingen er **selvbalanserende**:
 | ServiceDistributionProtocolForDataset | string | false | true |  | false | |
 | ServiceDistributionNameForDataset | string | false | true |  | false | |
 | DistributionProtocols | string | true | true |  | true | |
+| DistributionFormats | string | true | true |  | true | |
 | area | string | true | true |  | true | |
 | datasetservice | string | false | true |  | true | |
 | servicedataset | string | false | true |  | true | |
